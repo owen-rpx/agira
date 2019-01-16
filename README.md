@@ -17,6 +17,6 @@ pip install -r requirements.txt
 python app.py
 ```
 
-## Need documents
-http://docs.jinkan.org/docs/flask/index.html
-https://bulma.io/
+## Knowledge documents
+    http://docs.jinkan.org/docs/flask/index.html
+    https://bulma.io/
