@@ -1,29 +1,33 @@
-.login-input {
-  width: 130px;
+.el-header, .el-footer {
+  background-color: #B3C0D1;
+  color: #333;
+  text-align: center;
+  line-height: 60px;
 }
 
-.form-button {
-  width: 80px;
-  height: 35px;
+.el-aside {
+  background-color: #D3DCE6;
+  color: #333;
+  text-align: center;
+  line-height: 200px;
 }
 
-.signup-box {
-  margin: auto;
-  width: 325px;
-  background: rgba(255,255,255,0.05);
-  border: 1px solid rgba(255,255,255,0.3);
-  border-radius: 10px;
+.el-main {
+  background-color: #E9EEF3;
+  color: #333;
+  text-align: center;
+  line-height: 160px;
 }
 
-.settings-box {
-  margin: auto;
-  width: 325px;
+body > .el-container {
+  margin-bottom: 40px;
 }
 
-.signup-area {
-  padding: 30px;
+.el-container:nth-child(5) .el-aside,
+.el-container:nth-child(6) .el-aside {
+  line-height: 260px;
 }
 
-.settings-area {
-  padding: 30px;
+.el-container:nth-child(7) .el-aside {
+  line-height: 320px;
 }

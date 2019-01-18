@@ -1,17 +1,17 @@
 {% extends "base.html" %}
 {% block body %}
-<section class="hero is-info is-large">
-  <div class="hero-body">
-    <div class="container">
-      <h1 class="title">
-        Agira
-      </h1>
-      <h2 class="subtitle">
-        A glimpse of JIRA
-      </h2>
-    </div>
-  </div>
-</section>
+<div id="app">
+  <el-container>
+    <el-aside width="200px">Agira</el-aside>
+    <el-container>
+      <el-header>Header</el-header>
+      <el-main>A glimpse of JIRA</el-main>
+      <el-footer>
+        {% include "footer.html" %}
+      </el-footer>
+    </el-container>
+  </el-container>
+</div>
 {% endblock %}
 {% block scripts %}
 <script src="../static/js/scripts.js"></script>

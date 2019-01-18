@@ -6,6 +6,11 @@
 ![Contributions welcome](https://img.shields.io/badge/contributions-welcome-orange.svg)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](https://opensource.org/licenses/MIT)
 
+## Technologies
+(https://github.com/Owenzh/agira/tree/master/media/github/vuejs.png)
+(https://github.com/Owenzh/agira/tree/master/media/github/element-ui.svg)
+(https://github.com/Owenzh/agira/tree/master/media/github/vue-chartjs.png)
+
 ## Features
 - TBD
 
