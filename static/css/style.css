@@ -1,33 +1,48 @@
-.el-header, .el-footer {
-  background-color: #B3C0D1;
-  color: #333;
+.el-header {
+  text-align: left;
+  background-color: #fffeee;
+  color: #409EFF;
+  font-size: 1.1em;
+  height: 5em !important;
+  line-height: 5em;
+  height: 100%;
+}
+
+.el-footer {
+  position: fixed;
+  bottom: 1px;
+  width: 99.9%;
+  background-color: #409EFF;
+  color: #fffccc;
   text-align: center;
-  line-height: 60px;
 }
 
 .el-aside {
-  background-color: #D3DCE6;
-  color: #333;
+  display: block;
+  background-color: #409EFF;
+  color: rgb(241, 241, 241);
   text-align: center;
-  line-height: 200px;
+  height: 600px;
+  /* line-height: 200px; */
 }
 
 .el-main {
-  background-color: #E9EEF3;
+  position: inherit;
   color: #333;
   text-align: center;
   line-height: 160px;
+  height: 99.9%;
 }
 
-body > .el-container {
+.content_body {
+  position: absolute;
+  background-color: #E9EEF3;
+  top: 5em;
+  /* bottom: 5em;
+  height: 80%; */
+  width: 100%;
+}
+
+/* body > .el-container {
   margin-bottom: 40px;
-}
-
-.el-container:nth-child(5) .el-aside,
-.el-container:nth-child(6) .el-aside {
-  line-height: 260px;
-}
-
-.el-container:nth-child(7) .el-aside {
-  line-height: 320px;
-}
+} */
