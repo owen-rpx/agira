@@ -1,4 +1,4 @@
-html, body {
+html, body, * {
   margin: 0;
 }
 
@@ -15,22 +15,30 @@ html, body {
   left: 0px;
 }
 .el-header {
-  background-color: #B3C0D1;
-  color: #333;
-  text-align: center;
+  text-align: left;
   line-height: 60px;
+  border-bottom: 5px solid #5FB878;
+  background-color: #393D49;
+  color: #fff;
 }
 
 .el-aside {
-  background-color: #D3DCE6;
-  color: #333;
-  text-align: center;
-  line-height: 200px;
+  position: relative;
+  padding: 0 20px;
+  background-color: #393D49;
+  color: #c2c2c2;
+  border-radius: 2px;
+  font-size: .8em;
+  box-sizing: border-box!important;
 }
-
 .el-main {
   background-color: #E9EEF3;
   color: #333;
   text-align: center;
   line-height: 160px;
+}
+
+/* 菜单重定义 */
+.el-menu {
+  border-right: 0px;
 }

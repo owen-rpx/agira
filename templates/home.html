@@ -2,9 +2,33 @@
 {% block body %}
 <div id="app">
   <el-container>
-    <el-header>Header</el-header>
+    <el-header>Hi,Agira</el-header>
     <el-container class="content">
-      <el-aside width="200px">Aside</el-aside>
+      <el-aside width="200px">
+        <el-menu background-color="#393D49" text-color="#c2c2c2">
+          <el-menu-item>
+            <template slot="title">
+              <i class="el-icon-view"></i>
+              <span>View</span>
+            </template>
+          </el-menu-item>
+
+          <el-menu-item>
+            <template slot="title">
+              <i class="el-icon-message"></i>
+              <span>Message</span>
+            </template>
+          </el-menu-item>
+
+          <el-menu-item>
+            <template slot="title">
+              <i class="el-icon-setting"></i>
+              <span>Settings</span>
+            </template>
+          </el-menu-item>
+        </el-menu>
+
+      </el-aside>
       <el-main>Main</el-main>
     </el-container>
   </el-container>
