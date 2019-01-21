@@ -2,22 +2,11 @@
 {% block body %}
 <div id="app">
   <el-container>
-    <el-header><strong>Hi,Agira</strong></el-header>
-  </el-container>
-  <section class="content_body">
-  <el-container>
-    <el-container>
-      <el-main>A glimpse of JIRA
-      </el-main>
+    <el-header>Header</el-header>
+    <el-container class="content">
+      <el-aside width="200px">Aside</el-aside>
+      <el-main>Main</el-main>
     </el-container>
-    <el-aside width="200px">Agira</el-aside>
-  </el-container>
-  </section>
-
-  <el-container>
-    <el-footer>
-      {% include "footer.html" %}
-    </el-footer>
   </el-container>
 </div>
 {% endblock %}
