@@ -9,14 +9,14 @@
           <el-menu-item>
             <template slot="title">
               <i class="el-icon-view"></i>
-              <span>View</span>
+              <router-link to="/view">View</router-link>
             </template>
           </el-menu-item>
 
           <el-menu-item>
             <template slot="title">
               <i class="el-icon-message"></i>
-              <span>Message</span>
+              <router-link to="/message">Message</router-link>
             </template>
           </el-menu-item>
 
@@ -29,11 +29,47 @@
         </el-menu>
 
       </el-aside>
-      <el-main>Main</el-main>
+      <el-main>
+        <router-view></router-view>
+        <el-row>
+          <el-col :span="24">
+            <horizontal-bar-chart></horizontal-bar-chart>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <line-chart></line-chart>
+          </el-col>
+          <el-col :span="12">
+            <bar-chart></bar-chart>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="12">
+            <radar-chart></radar-chart>
+          </el-col>
+          <el-col :span="12">
+            <pie-chart></pie-chart>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="12">
+            <polar-area-chart></polar-area-chart>
+          </el-col>
+          <el-col :span="12">
+            <bubble-chart></bubble-chart>
+          </el-col>
+        </el-row>
+
+
+
+      </el-main>
     </el-container>
   </el-container>
 </div>
 {% endblock %}
 {% block scripts %}
+<script src="../static/js/customed-charts.js"></script>
 <script src="../static/js/scripts.js"></script>
 {% endblock %}

@@ -3,7 +3,7 @@
 from scripts import tabledef
 from scripts import forms
 from scripts import helpers
-from flask import Flask, redirect, url_for, render_template, request, session
+from flask import Flask, redirect, url_for, render_template, request, session, send_from_directory
 import json
 import sys
 import os
@@ -13,6 +13,10 @@ app = Flask(__name__)
 
 
 # ======== Routing =========================================================== #
+@app.route('/favicon.ico')
+def favicon():
+    return send_from_directory(os.path.join(app.root_path, 'static'), 'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
 # -------- Login ------------------------------------------------------------- #
 @app.route('/', methods=['GET', 'POST'])
 def home():
