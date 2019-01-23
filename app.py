@@ -21,6 +21,11 @@ def favicon():
 @app.route('/', methods=['GET', 'POST'])
 def home():
     return render_template('home.html')
+  
+# -------- Data API ---------------------------------------------------------- #
+@app.route('/api/chart/<type>', methods=['GET', 'POST'])
+def charts(type):
+    return type + ' back'
 
 # ======== Main ============================================================== #
 if __name__ == "__main__":
