@@ -163,3 +163,5 @@ htmlcov/
 
 # DB 
 *.db
+# static data
+.data/csv/

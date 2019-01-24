@@ -1,3 +1,17 @@
+Vue.component('dyn-line-chart', {
+    props: ['labels', 'datasets'],
+    extends: VueChartJs.Line,
+    mounted() {
+        this.renderChart({
+            labels: this.labels,
+            datasets: this.datasets
+        }, {
+            responsive: true,
+            maintainAspectRatio: false
+        })
+    }
+});
+
 Vue.component('line-chart', {
     extends: VueChartJs.Line,
     mounted() {

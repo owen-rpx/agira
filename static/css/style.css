@@ -1,19 +1,27 @@
-html, body, * {
+html,
+body,
+* {
   margin: 0;
 }
 
-#app {
-    position: absolute;
-    height: 99%;
-    width: 99%;
+[v-cloak] {
+  display: none;
 }
-.content{
+
+#app {
+  position: absolute;
+  height: 99%;
+  width: 99%;
+}
+
+.content {
   width: 100%;
   position: absolute;
   top: 60px;
   bottom: 0px;
   left: 0px;
 }
+
 .el-header {
   text-align: left;
   line-height: 60px;
@@ -29,8 +37,9 @@ html, body, * {
   color: #c2c2c2;
   border-radius: 2px;
   font-size: .8em;
-  box-sizing: border-box!important;
+  box-sizing: border-box !important;
 }
+
 .el-main {
   background-color: #E9EEF3;
   color: #333;

@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% block body %}
-<div id="app">
+<div id="app" v-cloak>
   <el-container>
     <el-header>Hi,Agira</el-header>
     <el-container class="content">
+      <!--aside-->
       <el-aside width="200px">
         <el-menu background-color="#393D49" text-color="#c2c2c2">
           <el-menu-item>
@@ -29,14 +30,21 @@
         </el-menu>
 
       </el-aside>
+      <!-- main -->
       <el-main>
         <router-view></router-view>
+        <p>${ test }</p>
         <el-row>
+          <el-col :span="10">
+            <dyn-line-chart v-bind:labels='labels_line' v-bind:datasets='datasets_line'></dyn-line-chart>
+          </el-col>
+        </el-row>
+        <el-row v-if='debug'>
           <el-col :span="24">
             <horizontal-bar-chart></horizontal-bar-chart>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row v-if='debug'>
           <el-col :span="12">
             <line-chart></line-chart>
           </el-col>
@@ -45,7 +53,7 @@
           </el-col>
         </el-row>
 
-        <el-row>
+        <el-row v-if='debug'>
           <el-col :span="12">
             <radar-chart></radar-chart>
           </el-col>
@@ -53,7 +61,7 @@
             <pie-chart></pie-chart>
           </el-col>
         </el-row>
-        <el-row>
+        <el-row v-if='debug'>
           <el-col :span="12">
             <polar-area-chart></polar-area-chart>
           </el-col>
@@ -61,8 +69,6 @@
             <bubble-chart></bubble-chart>
           </el-col>
         </el-row>
-
-
 
       </el-main>
     </el-container>
