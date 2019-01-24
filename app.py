@@ -7,6 +7,7 @@ from flask import Flask, redirect, url_for, render_template, request, session, s
 import json
 import sys
 import os
+import pandas as pd
 
 
 app = Flask(__name__)
@@ -26,6 +27,13 @@ def home():
 @app.route('/api/chart/<type>', methods=['GET', 'POST'])
 def charts(type):
     return type + ' back'
+
+@app.route('/api/data', methods = ['GET'])
+def getData():
+    if request.method == 'GET':
+        dataPath = os.path.join(app.root_path, 'data')
+        df = pd.read_csv(dataPath +'/demo.csv', header=0, sep=',')
+        return df['Component/s'].value_counts()
 
 # ======== Main ============================================================== #
 if __name__ == "__main__":
