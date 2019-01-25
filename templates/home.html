@@ -16,15 +16,8 @@
 
           <el-menu-item>
             <template slot="title">
-              <i class="el-icon-message"></i>
-              <router-link to="/message">Message</router-link>
-            </template>
-          </el-menu-item>
-
-          <el-menu-item>
-            <template slot="title">
               <i class="el-icon-setting"></i>
-              <span>Settings</span>
+              <router-link to="/setting">Settings</router-link>
             </template>
           </el-menu-item>
         </el-menu>
@@ -33,13 +26,17 @@
       <!-- main -->
       <el-main>
         <router-view></router-view>
-        <p>${ test }</p>
-        <el-row>
-          <el-col :span="10">
-            <dyn-line-chart v-bind:labels='labels_line' v-bind:datasets='datasets_line'></dyn-line-chart>
-          </el-col>
-        </el-row>
-        <el-row v-if='debug'>
+        <script type="x-template" id="view_tmp">
+          <el-row>
+            <el-col :span="24">
+              <dyn-line-chart v-if='isLoad' v-bind:labels='labels_line' v-bind:data='data_line'></dyn-line-chart>
+            </el-col>
+          </el-row>
+        </script>
+        <script type="x-template" id="setting_tmp">
+          <h2>Settings</h2>
+        </script>
+        <!-- <el-row v-if='debug'>
           <el-col :span="24">
             <horizontal-bar-chart></horizontal-bar-chart>
           </el-col>
@@ -68,7 +65,7 @@
           <el-col :span="12">
             <bubble-chart></bubble-chart>
           </el-col>
-        </el-row>
+        </el-row> -->
 
       </el-main>
     </el-container>

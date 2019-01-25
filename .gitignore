@@ -153,6 +153,8 @@ _mailinglist
 .cache/
 .pytest_cache/
 .idea/
+.data/
+# *.csv
 docs/_build/
 
 # Coverage reports
@@ -163,5 +165,3 @@ htmlcov/
 
 # DB 
 *.db
-# static data
-.data/csv/

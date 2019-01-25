@@ -3,7 +3,7 @@
 from scripts import tabledef
 from scripts import forms
 from scripts import helpers
-from flask import Flask, redirect, url_for, render_template, request, session, send_from_directory
+from flask import Flask, redirect, url_for, render_template, request, Response, session, send_from_directory
 import json
 import sys
 import os
@@ -32,8 +32,12 @@ def charts(type):
 def getData():
     if request.method == 'GET':
         dataPath = os.path.join(app.root_path, 'data')
-        df = pd.read_csv(dataPath +'/demo.csv', header=0, sep=',')
-        return df['Component/s'].value_counts()
+        print(dataPath)
+        df = pd.read_csv(dataPath +'/demo.csv', header=0, sep=',', encoding = 'ISO-8859-1')
+        json_response = df['Component/s'].value_counts().to_json()
+        print(json_response)
+        return Response(json_response)
+
 
 # ======== Main ============================================================== #
 if __name__ == "__main__":

@@ -1,9 +1,28 @@
 function checkin() {
     var view = {
-        template: '<div>View Layer</div>'
+        props: ['isLoad', 'labels_line', 'data_line'],
+        template: '#view_tmp',
+        data: {
+            isLoad: false,
+            labels_line: [],
+            data_line: []
+        },
+        created: function () {
+            this.$http.get('/api/data').then(function (res) {
+                var chart_data = res.body;
+                this.labels_line = Object.keys(chart_data);
+                this.data_line = Object.values(chart_data);
+                this.isLoad = true;
+            }, function () {
+                console.log('请求失败处理');
+            });
+        }
     };
-    var message = {
-        template: '<div>Message Layer</div>'
+    var setting = {
+        template: '#setting_tmp'
+    };
+    var no_found = {
+        template: '<div>404 page</div>'
     };
 
     var routesCfg = [{
@@ -11,8 +30,16 @@ function checkin() {
             component: view
         },
         {
-            path: '/message',
-            component: message
+            path: '/setting',
+            component: setting
+        },
+        {
+            path: '/no_found',
+            component: no_found
+        },
+        {
+            path: '*',
+            redirect: '/no_found'
         }
     ];
     var router = new VueRouter({
@@ -23,28 +50,9 @@ function checkin() {
         delimiters: ['${', '}'],
         router: router,
         data: {
-            test: 'this is data test.',
-            debug: false,
-            labels_line: ['WP', 'LMi', 'LMe'],
-            datasets_line: [{
-                label: 'Data One',
-                backgroundColor: '#f87979',
-                data: [40, 39, 89]
-            }]
-        },
-        methods: {
-            get: function () {
-                //发送get请求
-                this.$http.get('/api/data').then(function (res) {
-                    // document.write(res.body);
-                    console.log(res.body);
-                }, function () {
-                    console.log('请求失败处理');
-                });
-            }
+            debug: false
         }
     });
     app.$mount('#app');
-    app.get();
 }
 window.onload = checkin;

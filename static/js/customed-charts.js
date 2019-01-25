@@ -1,10 +1,14 @@
 Vue.component('dyn-line-chart', {
-    props: ['labels', 'datasets'],
+    props: ['labels', 'data'],
     extends: VueChartJs.Line,
     mounted() {
         this.renderChart({
             labels: this.labels,
-            datasets: this.datasets
+            datasets: [{
+                label: 'counts',
+                backgroundColor: '#6666FF',
+                data: this.data
+            }]
         }, {
             responsive: true,
             maintainAspectRatio: false
