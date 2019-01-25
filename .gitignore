@@ -153,8 +153,7 @@ _mailinglist
 .cache/
 .pytest_cache/
 .idea/
-.data/
-# *.csv
+*.csv
 docs/_build/
 
 # Coverage reports
