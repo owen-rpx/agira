@@ -17,7 +17,10 @@
 
 
 ## Features
-- TBD
+- Fetch projects management information from Jira
+- Config your concern projects.
+- Generate more flexible and practical charts
+- Download charts
 
 ## Setup
 ``` 
