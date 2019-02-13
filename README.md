@@ -17,6 +17,7 @@
 ``` 
 git clone https://github.com/Owenzh/agira.git
 cd agira
+download or create demo_lmi.csv,demo_lme.csv,demo_wp.csv files into /data folder
 pip install -r requirements.txt
 python app.py
 ```

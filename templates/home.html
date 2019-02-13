@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% block body %}
 <div id="app" v-cloak>
+  <script type="module">
+    // 设置element-ui的默认语言
+    ELEMENT.locale(ELEMENT.lang.en);
+  </script>
   <el-container>
     <el-header>Hi,Agira</el-header>
     <el-container class="content">
@@ -10,14 +14,14 @@
           <el-menu-item>
             <template slot="title">
               <i class="el-icon-view"></i>
-              <router-link to="/view">View</router-link>
+              <router-link to="/view" replace>View</router-link>
             </template>
           </el-menu-item>
 
           <el-menu-item>
             <template slot="title">
               <i class="el-icon-setting"></i>
-              <router-link to="/setting">Settings</router-link>
+              <router-link to="/settings" replace>Settings</router-link>
             </template>
           </el-menu-item>
         </el-menu>
@@ -27,46 +31,253 @@
       <el-main>
         <router-view></router-view>
         <script type="x-template" id="view_tmp">
-          <el-row>
-            <el-col :span="24">
-              <dyn-line-chart v-if='isLoad' v-bind:labels='labels_line' v-bind:data='data_line'></dyn-line-chart>
-            </el-col>
-          </el-row>
+          <div class="view">
+            <el-row>
+              <el-col :span="24">
+              <el-form :inline="true" :model="formInline" class="demo-form-inline">
+
+              <el-form-item label="Projects">
+                <el-select v-model="formInline.projects" multiple placeholder="Projects">
+                  <el-option label="Aldon LMi" value="ALLI"></el-option>
+                  <el-option label="Aldon LMe" value="ALLE"></el-option>
+                  <el-option label="Aldon Web Portal" value="ALWP"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="Date range">
+              <el-form-item>
+                  <el-date-picker
+                    v-model="formInline.daterange"
+                    type="daterange"
+                    align="left"
+                    unlink-panels
+                    range-separator="-"
+                    start-placeholder="start"
+                    end-placeholder="end"
+                    :picker-options="pickerOptions">
+                  </el-date-picker>
+                </el-form-item>
+                </el-form-item>
+              <el-form-item>
+                <el-button type="primary" @click="onSubmit">Query</el-button>
+              </el-form-item>
+            </el-form>
+          </el-col>
+        </el-row>
+
+        <!-- element-loading-text="拼命加载中"
+        element-loading-spinner="el-icon-loading"
+        element-loading-background="rgba(0, 0, 0, 0.8)" -->
+
+          <div
+            v-loading="!isLoad"
+           >
+
+            <el-row>
+              <el-col :span="chart_sapn" v-if='isLoad'>
+                <div class="chart_section">
+                  <fieldset id="status_fs">
+                    <legend>Status chart</legend>
+                    <alm-bar-chart v-bind:labels='labels_status' v-bind:datasets='datasets_status'></alm-bar-chart>
+                    <el-button round><a id="link_status" download="status.png">Download png</a></el-button>
+                  </fieldset>
+                </div>
+              </el-col>
+            </el-row>
+
+
+            <el-row>
+              <el-col :span="chart_sapn" v-if='isLoad'>
+                <div class="chart_section">
+                  <fieldset id="status_h_fs">
+                    <legend>Status chart</legend>
+                    <alm-horizontal-bar-chart v-bind:labels='labels_h_status' v-bind:datasets='datasets_h_status'></alm-horizontal-bar-chart>
+                    <el-button round><a id="link_status_h" download="status_h.png">Download png</a></el-button>
+                  </fieldset>
+                </div>
+              </el-col>
+            </el-row>
+
+            <el-row>
+              <el-col :span="chart_sapn" v-if='isLoad'>
+                <div class="chart_section">
+                  <fieldset id="status_line_fs">
+                    <legend>Status chart</legend>
+                    <alm-line-chart v-bind:labels='labels_status_line' v-bind:datasets='datasets_status_line'></alm-line-chart>
+                    <el-button round><a id="link_status_line" download="status_line.png">Download png</a></el-button>
+                  </fieldset>
+                </div>
+              </el-col>
+            
+            </el-row>
+
+            
+            <el-row>
+              <el-col :span="chart_sapn" v-if='isLoad'>
+                <div class="chart_section">
+                  <fieldset id="issue_fs">
+                    <legend>Issue chart</legend>
+                    <alm-bar-chart v-bind:labels='labels_issue' v-bind:datasets='datasets_issue'></alm-bar-chart>
+                    <el-button round><a id="link_issue" download="issue.png">Download png</a></el-button>
+
+                </fieldset>
+                </div>
+              </el-col>
+            </el-row>
+            
+            <el-row>
+              <el-col :span="chart_sapn" v-if='isLoad'>
+                <div class="chart_section">
+                  <fieldset id="priority_fs">
+                    <legend>Priority chart</legend>
+                    <alm-bar-chart v-bind:labels='labels_priority' v-bind:datasets='datasets_priority'></alm-bar-chart>
+                    <el-button round><a id="link_priority" download="priority.png">Download png</a></el-button>
+
+                </fieldset>
+                </div>
+              </el-col>
+            </el-row>
+
+            <el-row>
+              <el-col :span="chart_sapn" v-if='isLoad'>
+                <div class="chart_section">
+                  <fieldset id="version_fs">
+                    <legend>Version chart</legend>
+                    <alm-horizontal-bar-chart v-bind:labels='labels_version' v-bind:datasets='datasets_version'></alm-horizontal-bar-chart>
+                    <el-button round><a id="link_version" download="version.png">Download png</a></el-button>
+                  </fieldset>
+                </div>
+              </el-col>
+            </el-row>
+
+            <el-row>
+              <el-col :span="chart_sapn" v-if='isLoad'>
+                <div class="chart_section">
+                  <fieldset id="discover_fs">
+                    <legend>DiscoverBy chart</legend>
+                    <alm-horizontal-bar-chart v-bind:labels='labels_discover' v-bind:datasets='datasets_discover'></alm-horizontal-bar-chart>
+                    <el-button round><a id="link_discover" download="discover.png">Download png</a></el-button>
+
+                  </fieldset>
+                </div>
+              </el-col>
+            </el-row>
+
+
+          </div>
+          </div>
         </script>
         <script type="x-template" id="setting_tmp">
-          <h2>Settings</h2>
+          <div class="settings">
+            <el-row>
+              <el-col :span="4">
+              
+              <el-steps direction="vertical" :active="active" :space="200" finish-status="success">
+                  <el-step title="pick projects"></el-step>
+                  <el-step title="select charts"></el-step>
+                  <el-step title="done"></el-step>
+              </el-steps>
+            </el-col>
+            <el-col :span="20">
+              <!-- <transition name="fade"  mode="out-in"> -->
+              <!--project setting-->
+              
+              <el-form ref="project" style="margin-left:60px" label-position="left" label-width="100" :model="project_info" v-show='ctl.isProject'>
+                  <el-col :span="12">
+                  <el-form-item label="project name">
+
+                      <el-input v-model="project_info.name"  size="medium"></el-input>
+    
+                  </el-form-item>
+                  <el-form-item label="project key">
+
+                      <el-input v-model="project_info.key"  size="medium"></el-input>
+    
+                  </el-form-item>
+                  <el-form-item label="project description">
+  
+                      <el-input v-model="project_info.desc"  size="medium"></el-input>
+                    
+                  </el-form-item>
+                  
+                  <el-form-item>
+                    <el-button circle icon="el-icon-check" @click="save_project"></el-button>
+                    <el-button circle icon="el-icon-plus" @click="add_project"></el-button>
+                  </el-form-item>
+                </el-col>
+              </el-form>
+            <!-- </transition> -->
+
+              <!--chart setting-->
+              <!-- <transition name="fade" mode="out-in"> -->
+              <el-form ref="chart" style="margin-left:60px" label-position="left" label-width="100" :model="chart_info" v-show='ctl.isChart'>
+                <el-col :span="12">  
+                  <el-form-item label="chart name">
+                    <el-select v-model="chart_info.name" size="medium" placeholder="select chart name">
+                      <el-option
+                        v-for="item in basic_chart"
+                        :key="item.name"
+                        :label="item.name"
+                        :value="item.name">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                  <el-form-item label="chart type">
+                    <el-select v-model="chart_info.type" size="medium" placeholder="select chart type">
+                      <el-option
+                        v-for="item in chart_types"
+                        :key="item"
+                        :label="item"
+                        :value="item">
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                  <el-form-item label="chart description">
+                    <el-input v-model="chart_info.desc" size="medium"></el-input>
+                  </el-form-item>
+                    
+                  <el-form-item>
+                    <el-button circle icon="el-icon-check" @click="save_chart"></el-button>
+                    <el-button circle icon="el-icon-plus" @click="add_chart"></el-button>
+                  </el-form-item>
+                </el-col>
+              </el-form>
+            <!-- </transition> -->
+
+              <!--done setting-->
+              <!-- <transition name="fade" mode="out-in"> -->
+              <el-form ref="all" style="margin-left:60px" label-position="left" label-width="100"  v-show='ctl.isDone'>
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix">
+                      <span>Projects List</span>
+                    </div>
+                    <div v-for="p in project_set" class="text item">
+                        <span v-text="p.name"></span>
+                        <span> - </span>
+                        <span v-text="p.key"></span>
+                    </div>
+                </el-card>
+                <p></p>
+                <el-card class="box-card">
+                    <div slot="header" class="clearfix">
+                      <span>Charts List</span>
+                    </div>
+                    <div v-for="c in chart_set" class="text item">
+                        <span v-text="c.name"></span>
+                        <span> - </span>
+                        <span v-text="c.type"></span>
+                    </div>
+                  </el-card>
+                
+                <el-form-item>
+                    <el-button type="primary" @click="onSubmit" :disabled="btn_disabled">confirm</el-button>
+                    <el-button type="warning" @click="reset">reset</el-button>
+                </el-form-item>
+              </el-form>
+            <!-- </transition> -->
+          </el-col>
+            </el-row>
+           </div>
         </script>
-        <!-- <el-row v-if='debug'>
-          <el-col :span="24">
-            <horizontal-bar-chart></horizontal-bar-chart>
-          </el-col>
-        </el-row>
-        <el-row v-if='debug'>
-          <el-col :span="12">
-            <line-chart></line-chart>
-          </el-col>
-          <el-col :span="12">
-            <bar-chart></bar-chart>
-          </el-col>
-        </el-row>
-
-        <el-row v-if='debug'>
-          <el-col :span="12">
-            <radar-chart></radar-chart>
-          </el-col>
-          <el-col :span="12">
-            <pie-chart></pie-chart>
-          </el-col>
-        </el-row>
-        <el-row v-if='debug'>
-          <el-col :span="12">
-            <polar-area-chart></polar-area-chart>
-          </el-col>
-          <el-col :span="12">
-            <bubble-chart></bubble-chart>
-          </el-col>
-        </el-row> -->
-
       </el-main>
     </el-container>
   </el-container>
