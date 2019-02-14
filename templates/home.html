@@ -64,13 +64,7 @@
           </el-col>
         </el-row>
 
-        <!-- element-loading-text="拼命加载中"
-        element-loading-spinner="el-icon-loading"
-        element-loading-background="rgba(0, 0, 0, 0.8)" -->
-
-          <div
-            v-loading="!isLoad"
-           >
+          <div v-loading="!isLoad">
 
             <el-row>
               <el-col :span="chart_sapn" v-if='isLoad'>
@@ -85,7 +79,7 @@
             </el-row>
 
 
-            <el-row>
+            <!-- <el-row>
               <el-col :span="chart_sapn" v-if='isLoad'>
                 <div class="chart_section">
                   <fieldset id="status_h_fs">
@@ -95,9 +89,9 @@
                   </fieldset>
                 </div>
               </el-col>
-            </el-row>
+            </el-row> -->
 
-            <el-row>
+            <!-- <el-row>
               <el-col :span="chart_sapn" v-if='isLoad'>
                 <div class="chart_section">
                   <fieldset id="status_line_fs">
@@ -107,8 +101,7 @@
                   </fieldset>
                 </div>
               </el-col>
-            
-            </el-row>
+            </el-row> -->
 
             
             <el-row>

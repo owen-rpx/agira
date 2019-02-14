@@ -57,10 +57,10 @@
 
                  labels_status: [],
                  datasets_status: [],
-                 labels_h_status: [],
-                 datasets_h_status: [],
-                 labels_status_line: [],
-                 datasets_status_line: [],
+                //  labels_h_status: [],
+                //  datasets_h_status: [],
+                //  labels_status_line: [],
+                //  datasets_status_line: [],
                  labels_issue: [],
                  datasets_issue: [],
                  labels_priority: [],
@@ -125,14 +125,14 @@
                          this.datasets_priority = _data;
                      });
 
-                     this.drawLine(chart_data_set['status'], 'status_line_fs', (_axis, _data) => {
-                         this.labels_status_line = _axis;
-                         this.datasets_status_line = _data;
-                     });
-                     this.drawHorizontalBar(chart_data_set['status'], 'status_h_fs', (_axis, _data) => {
-                         this.labels_h_status = _axis;
-                         this.datasets_h_status = _data;
-                     });
+                    //  this.drawLine(chart_data_set['status'], 'status_line_fs', (_axis, _data) => {
+                    //      this.labels_status_line = _axis;
+                    //      this.datasets_status_line = _data;
+                    //  });
+                    //  this.drawHorizontalBar(chart_data_set['status'], 'status_h_fs', (_axis, _data) => {
+                    //      this.labels_h_status = _axis;
+                    //      this.datasets_h_status = _data;
+                    //  });
                      this.drawHorizontalBar(chart_data_set['version'], 'version_fs', (_axis, _data) => {
                          this.labels_version = _axis;
                          this.datasets_version = _data;
