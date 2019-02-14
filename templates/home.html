@@ -78,30 +78,17 @@
               </el-col>
             </el-row>
 
-
-            <!-- <el-row>
+            <el-row>
               <el-col :span="chart_sapn" v-if='isLoad'>
                 <div class="chart_section">
-                  <fieldset id="status_h_fs">
-                    <legend>Status chart</legend>
-                    <alm-horizontal-bar-chart v-bind:labels='labels_h_status' v-bind:datasets='datasets_h_status'></alm-horizontal-bar-chart>
-                    <el-button round><a id="link_status_h" download="status_h.png">Download png</a></el-button>
+                  <fieldset id="customer_fs">
+                    <legend>Customer chart</legend>
+                    <alm-horizontal-bar-chart v-bind:labels='labels_customer' v-bind:datasets='datasets_customer'></alm-horizontal-bar-chart>
+                    <el-button round><a id="link_customer" download="customer.png">Download png</a></el-button>
                   </fieldset>
                 </div>
               </el-col>
-            </el-row> -->
-
-            <!-- <el-row>
-              <el-col :span="chart_sapn" v-if='isLoad'>
-                <div class="chart_section">
-                  <fieldset id="status_line_fs">
-                    <legend>Status chart</legend>
-                    <alm-line-chart v-bind:labels='labels_status_line' v-bind:datasets='datasets_status_line'></alm-line-chart>
-                    <el-button round><a id="link_status_line" download="status_line.png">Download png</a></el-button>
-                  </fieldset>
-                </div>
-              </el-col>
-            </el-row> -->
+            </el-row>
 
             
             <el-row>
@@ -145,16 +132,26 @@
             <el-row>
               <el-col :span="chart_sapn" v-if='isLoad'>
                 <div class="chart_section">
-                  <fieldset id="discover_fs">
-                    <legend>DiscoverBy chart</legend>
-                    <alm-horizontal-bar-chart v-bind:labels='labels_discover' v-bind:datasets='datasets_discover'></alm-horizontal-bar-chart>
-                    <el-button round><a id="link_discover" download="discover.png">Download png</a></el-button>
-
+                  <fieldset id="component_fs">
+                    <legend>Components chart</legend>
+                    <alm-horizontal-bar-chart v-bind:labels='labels_component' v-bind:datasets='datasets_component'></alm-horizontal-bar-chart>
+                    <el-button round><a id="link_version" download="component.png">Download png</a></el-button>
                   </fieldset>
                 </div>
               </el-col>
             </el-row>
 
+            <el-row>
+              <el-col :span="chart_sapn" v-if='isLoad'>
+                <div class="chart_section">
+                  <fieldset id="discover_fs">
+                    <legend>Discover chart</legend>
+                    <alm-horizontal-bar-chart v-bind:labels='labels_discover' v-bind:datasets='datasets_discover'></alm-horizontal-bar-chart>
+                    <el-button round><a id="link_version" download="discover.png">Download png</a></el-button>
+                  </fieldset>
+                </div>
+              </el-col>
+            </el-row>
 
           </div>
           </div>

@@ -8,8 +8,9 @@ import json
 import sys
 import os
 import pandas as pd
-
-
+import io
+sys.stdout = io.TextIOWrapper(
+    sys.stdout.buffer, encoding='utf8')  # 改变标准输出的默认编码
 app = Flask(__name__)
 
 
@@ -43,14 +44,17 @@ def getData(projects, daterange):
         projects_set = []
         for project in projects_list:
             projects_set.append(pick_data(project, daterange))
-
         charts_type = {'status': 'status', 'issue': 'issue',
-                       'priority': 'priority', 'discover': 'discover', 'component': 'component', 'version': 'version'}
+                       'priority': 'priority', 'customer': 'customer', 'version': 'version', 'discover': 'discover', 'component': 'component', }
         res_dict = {}
         for res_type in charts_type:
             project_type_set = []
             for project_data in projects_set:
                 project_type_set.append(project_data[res_type])
+            if res_type == 'customer':
+                project_type_set = clean_customers_data(project_type_set)
+            if res_type == 'status' or res_type == 'version' or res_type == 'discover' or res_type == 'component':
+                project_type_set = clean_version_data(project_type_set)
             ds = generate_axis_data(project_type_set)
             data = {
                 'label': projects_list,
@@ -73,9 +77,43 @@ def get_x_axis(data_list):
     return x_axis
 
 
+def clean_customers_data(data_list):
+    min_val = 5
+    limits = 7
+    l = len(data_list)
+    gen_list = []
+    for i in range(l):
+        item = data_list[i]
+        new_item = {}
+        cur_x_axis = item.keys()
+        for x in cur_x_axis:
+            if item[x] >= min_val:
+                if (x.lower().find('internal') == -1) and (x.lower().find('unknown') == -1) and (x.lower().find('.doc') == -1) and (x.lower().find('aldon') == -1):
+                    if len(new_item) < limits:
+                        new_item[x] = item[x]
+        gen_list.append(new_item)
+    return gen_list
+
+
+def clean_version_data(data_list):
+    min_val = 5
+    limits = 7
+    l = len(data_list)
+    gen_list = []
+    for i in range(l):
+        item = data_list[i]
+        new_item = {}
+        cur_x_axis = item.keys()
+        for x in cur_x_axis:
+            if item[x] >= min_val:
+                if len(new_item) < limits:
+                    new_item[x] = item[x]
+        gen_list.append(new_item)
+    return gen_list
+
+
 def generate_axis_data(data_list):
     x_axis = get_x_axis(data_list)
-    # print(x_axis)
     l = len(data_list)
     gen_list = []
     for i in range(l):
@@ -87,7 +125,6 @@ def generate_axis_data(data_list):
         gen_list.append(item)
     return {'x_axis': x_axis, 'data': gen_list}
 
-# def pick_data(type='ALWP',start= '2018-01-01',end= '2019-01-01'):
 def pick_data(type, daterange):
     dataPath = os.path.join(app.root_path, 'data')
     inputfile_dir = {'ALLI': 'demo_lmi.csv',
@@ -96,8 +133,8 @@ def pick_data(type, daterange):
     df = pd.read_csv(iptdir, header=0, sep=',', encoding='ISO-8859-1',
                      low_memory=False, mangle_dupe_cols=True)
 
-    cols = ['Issue key', 'Issue Type', 'Project key', 'Project name', 'Priority', 'Project lead', 'Status', 'Assignee', 'Reporter', 'Creator', 'Created', 'Updated',
-            'Affects Version/s', 'Component/s', 'Environment', 'Original Estimate', 'Remaining Estimate', 'Time Spent', 'Custom field (Affected Customers)', 'Custom field (Discovered by)']
+    cols = ['Issue key', 'Issue Type', 'Project key', 'Project name', 'Priority', 'Project lead', 'Status', 'Assignee', 'Reporter', 'Created', 'Updated',
+            'Affects Version/s', 'Custom field (Affected Customers)', 'Component/s','Custom field (Discovered by)']
     df = df[cols]
 
     df['Created'] = pd.to_datetime(df['Created'])
@@ -113,19 +150,22 @@ def pick_data(type, daterange):
     json_issue_response = json.loads(df['Issue Type'].value_counts().to_json())
     json_priority_response = json.loads(
         df['Priority'].value_counts().to_json())
-    json_discover_response = json.loads(
-        df['Custom field (Discovered by)'].value_counts().to_json())
+    json_customer_response = json.loads(
+        df['Custom field (Affected Customers)'].value_counts().to_json())
     json_comp_response = json.loads(df['Component/s'].value_counts().to_json())
     json_version_response = json.loads(
         df['Affects Version/s'].value_counts().to_json())
+    json_discover_response = json.loads(
+        df['Custom field (Discovered by)'].value_counts().to_json())
 
     res = {
         'status': json_status_response,
         'issue': json_issue_response,
         'priority': json_priority_response,
-        'discover': json_discover_response,
+        'customer': json_customer_response,
         'component': json_comp_response,
         'version': json_version_response,
+        'discover': json_discover_response,
     }
     return res
 

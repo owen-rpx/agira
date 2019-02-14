@@ -65,10 +65,12 @@
                  datasets_issue: [],
                  labels_priority: [],
                  datasets_priority: [],
-                 labels_discover: [],
-                 datasets_discover: [],
+                 labels_customer: [],
+                 datasets_customer: [],
                  labels_component: [],
                  datasets_component: [],
+                 labels_discover: [],
+                 datasets_discover: [],
                  labels_version: [],
                  datasets_version: []
              }
@@ -80,7 +82,6 @@
          },
          methods: {
              onSubmit() {
-                 console.log(this.formInline);
                  var daterange = this.formInline.daterange;
                  var projects = this.formInline.projects;
                  var filters = null;
@@ -94,7 +95,6 @@
                          var d = fmt(v.getDate());
                          return y + '-' + m + '-' + d;
                      });
-                     console.log(dr);
                      filters.daterange = dr.join(',');
                  } else {
                      filters.projects = ['ALLI', 'ALLE', 'ALWP'].join(',');
@@ -129,6 +129,7 @@
                     //      this.labels_status_line = _axis;
                     //      this.datasets_status_line = _data;
                     //  });
+                    
                     //  this.drawHorizontalBar(chart_data_set['status'], 'status_h_fs', (_axis, _data) => {
                     //      this.labels_h_status = _axis;
                     //      this.datasets_h_status = _data;
@@ -136,6 +137,14 @@
                      this.drawHorizontalBar(chart_data_set['version'], 'version_fs', (_axis, _data) => {
                          this.labels_version = _axis;
                          this.datasets_version = _data;
+                     });
+                     this.drawHorizontalBar(chart_data_set['customer'], 'customer_fs', (_axis, _data) => {
+                         this.labels_customer = _axis;
+                         this.datasets_customer = _data;
+                     });
+                     this.drawHorizontalBar(chart_data_set['component'], 'component_fs', (_axis, _data) => {
+                         this.labels_component = _axis;
+                         this.datasets_component = _data;
                      });
                      this.drawHorizontalBar(chart_data_set['discover'], 'discover_fs', (_axis, _data) => {
                          this.labels_discover = _axis;
