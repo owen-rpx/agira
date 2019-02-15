@@ -66,6 +66,52 @@ def getData(projects, daterange):
         return Response(json_str)
 
 
+@app.route('/api/tickets/<projects>/<daterange>/<keys>', methods=['GET'])
+def getTickets(projects, daterange, keys):
+    print(projects)
+    print(daterange)
+    print(keys)
+    keys_list = keys.split(',')
+    projects_list = projects.split(',')
+    projects_dict = {}
+    for project in projects_list:
+        projects_dict[project] = pick_tickets_data(
+            project, daterange, keys_list)
+    json_str = json.dumps(projects_dict)
+    return Response(json_str)
+
+
+def pick_tickets_data(type, daterange, keys_list):
+    dataPath = os.path.join(app.root_path, 'data')
+    inputfile_dir = {'ALLI': 'demo_lmi.csv',
+                     'ALLE': 'demo_lme.csv', 'ALWP': 'demo_wp.csv'}
+    iptdir = dataPath+'/'+inputfile_dir[type]
+    df = pd.read_csv(iptdir, header=0, sep=',', encoding='ISO-8859-1',
+                     low_memory=False, mangle_dupe_cols=True)
+
+    cols = ['Issue key', 'Summary', 'Issue Type', 'Project key', 'Project name', 'Priority', 'Project lead', 'Status', 'Assignee', 'Reporter', 'Created', 'Updated',
+            'Affects Version/s', 'Custom field (Affected Customers)', 'Component/s', 'Custom field (Discovered by)']
+    df = df[cols]
+
+    df['Created'] = pd.to_datetime(df['Created'])
+
+    df = df.set_index('Created')
+    # start = '2018-01-01'
+    # end = '2019-01-01'
+    drange = daterange.split(',')
+    start = drange[0]
+    end = drange[1]
+    df = df[start:end]
+    l = len(keys_list)
+    ticket_dict = {}
+    for k in range(l):
+        key_col = keys_list[k]
+        key_col_tickect = df['Issue key'][df['Custom field (Affected Customers)']
+                                          == key_col]
+        ticket_dict[key_col] = key_col_tickect.tolist()
+    return ticket_dict
+
+
 def get_x_axis(data_list):
     x_axis = []
     for data in data_list:
@@ -125,6 +171,7 @@ def generate_axis_data(data_list):
         gen_list.append(item)
     return {'x_axis': x_axis, 'data': gen_list}
 
+
 def pick_data(type, daterange):
     dataPath = os.path.join(app.root_path, 'data')
     inputfile_dir = {'ALLI': 'demo_lmi.csv',
@@ -133,8 +180,8 @@ def pick_data(type, daterange):
     df = pd.read_csv(iptdir, header=0, sep=',', encoding='ISO-8859-1',
                      low_memory=False, mangle_dupe_cols=True)
 
-    cols = ['Issue key', 'Issue Type', 'Project key', 'Project name', 'Priority', 'Project lead', 'Status', 'Assignee', 'Reporter', 'Created', 'Updated',
-            'Affects Version/s', 'Custom field (Affected Customers)', 'Component/s','Custom field (Discovered by)']
+    cols = ['Issue key', 'Summary', 'Issue Type', 'Project key', 'Project name', 'Priority', 'Project lead', 'Status', 'Assignee', 'Reporter', 'Created', 'Updated',
+            'Affects Version/s', 'Custom field (Affected Customers)', 'Component/s', 'Custom field (Discovered by)']
     df = df[cols]
 
     df['Created'] = pd.to_datetime(df['Created'])
@@ -158,6 +205,11 @@ def pick_data(type, daterange):
     json_discover_response = json.loads(
         df['Custom field (Discovered by)'].value_counts().to_json())
 
+    # ke = df[['Issue key','Summary']][df['Custom field (Affected Customers)'] == 'United Overseas Bank Limited']
+    # print(ke.to_json())
+    # ke = df['Issue key'][df['Custom field (Affected Customers)']
+    #                      == 'United Overseas Bank Limited']
+    # print(ke.tolist())
     res = {
         'status': json_status_response,
         'issue': json_issue_response,

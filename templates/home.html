@@ -67,6 +67,40 @@
           <div v-loading="!isLoad">
 
             <el-row>
+                <el-col :span="chart_sapn" v-if='isLoad'>
+                  <div class="chart_section">
+                    <fieldset id="customer_fs">
+                      <legend>Affected Customers chart</legend>
+                      <alm-horizontal-bar-chart v-bind:labels='labels_customer' v-bind:datasets='datasets_customer'></alm-horizontal-bar-chart>
+                      <el-button round><a id="link_customer" download="customer.png">Download png</a></el-button>
+                      <el-button round @click="fetch_keys">Retrieve refer tickets</el-button>
+                      <span v-loading="isClicked && !isCustomerTicketLoad"></span>
+                      <div v-if="isCustomerTicketLoad" style="display:inline-block">
+                        <div v-for="(gridData, project) in tickets_ref" style="display:inline-block">
+                          <el-popover
+                            placement="right"
+                            width="400"
+                            height="600"
+                            trigger="click">
+                            <div v-for="(value, key, index) in gridData" style="display:inline-block">
+                              <span v-text="key"></span>
+                              <br/>
+                              <span v-for="(v, k, idx) in value">
+                                <el-tag type="success">
+                                    <a :href="'https://jira.rocketsoftware.com/browse/'+ v + '' " target="_blank"><span v-text="v"></span></a>
+                                </el-tag>
+                              </span>
+                            </div>
+                            <el-button slot="reference"><span v-text="project"></span></el-button>
+                          </el-popover>
+                        </div>
+                      </div>
+                    </fieldset>
+                  </div>
+                </el-col>
+              </el-row>
+
+            <el-row>
               <el-col :span="chart_sapn" v-if='isLoad'>
                 <div class="chart_section">
                   <fieldset id="status_fs">
@@ -77,19 +111,6 @@
                 </div>
               </el-col>
             </el-row>
-
-            <el-row>
-              <el-col :span="chart_sapn" v-if='isLoad'>
-                <div class="chart_section">
-                  <fieldset id="customer_fs">
-                    <legend>Customer chart</legend>
-                    <alm-horizontal-bar-chart v-bind:labels='labels_customer' v-bind:datasets='datasets_customer'></alm-horizontal-bar-chart>
-                    <el-button round><a id="link_customer" download="customer.png">Download png</a></el-button>
-                  </fieldset>
-                </div>
-              </el-col>
-            </el-row>
-
             
             <el-row>
               <el-col :span="chart_sapn" v-if='isLoad'>

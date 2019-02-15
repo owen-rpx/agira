@@ -51,16 +51,19 @@
                          }
                      }]
                  },
+                 filters: Object.create(null),
                  chart_sapn: 22,
                  BKG: ['#60acfc', '#5bc49f', '#feb64d'],
                  isLoad: false,
+                 isCustomerTicketLoad: false,
+                 isClicked: false,
 
                  labels_status: [],
                  datasets_status: [],
-                //  labels_h_status: [],
-                //  datasets_h_status: [],
-                //  labels_status_line: [],
-                //  datasets_status_line: [],
+                 //  labels_h_status: [],
+                 //  datasets_h_status: [],
+                 //  labels_status_line: [],
+                 //  datasets_status_line: [],
                  labels_issue: [],
                  datasets_issue: [],
                  labels_priority: [],
@@ -72,11 +75,14 @@
                  labels_discover: [],
                  datasets_discover: [],
                  labels_version: [],
-                 datasets_version: []
+                 datasets_version: [],
+                 tickets_ref: Object.create(null)
              }
          },
          created: function () {
              this.$nextTick(function () {
+                 this.filters.projects = ['ALLI', 'ALLE', 'ALWP'].join(',');
+                 this.filters.daterange = ['2018-01-01', '2018-12-31'].join(',');
                  this.drawCharts();
              });
          },
@@ -100,8 +106,15 @@
                      filters.projects = ['ALLI', 'ALLE', 'ALWP'].join(',');
                      filters.daterange = ['2018-01-01', '2018-12-31'].join(',');
                  }
+                 this.clean_var();
                  this.isLoad = false;
+                 this.filters = filters;
                  this.drawCharts(filters);
+             },
+             clean_var() {
+                 this.isCustomerTicketLoad = false;
+                 this.isClicked = false;
+                 this.tickets_ref = Object.create(null);
              },
              drawCharts(filters) {
                  var url = '/api/data';
@@ -125,15 +138,15 @@
                          this.datasets_priority = _data;
                      });
 
-                    //  this.drawLine(chart_data_set['status'], 'status_line_fs', (_axis, _data) => {
-                    //      this.labels_status_line = _axis;
-                    //      this.datasets_status_line = _data;
-                    //  });
-                    
-                    //  this.drawHorizontalBar(chart_data_set['status'], 'status_h_fs', (_axis, _data) => {
-                    //      this.labels_h_status = _axis;
-                    //      this.datasets_h_status = _data;
-                    //  });
+                     //  this.drawLine(chart_data_set['status'], 'status_line_fs', (_axis, _data) => {
+                     //      this.labels_status_line = _axis;
+                     //      this.datasets_status_line = _data;
+                     //  });
+
+                     //  this.drawHorizontalBar(chart_data_set['status'], 'status_h_fs', (_axis, _data) => {
+                     //      this.labels_h_status = _axis;
+                     //      this.datasets_h_status = _data;
+                     //  });
                      this.drawHorizontalBar(chart_data_set['version'], 'version_fs', (_axis, _data) => {
                          this.labels_version = _axis;
                          this.datasets_version = _data;
@@ -231,6 +244,36 @@
                  });
                  var a_lk = fd.getElementsByTagName('a')[0];
                  a_lk.href = image;
+             },
+             fetch_keys() {
+                 this.clean_var();
+                 var url = '/api/tickets';
+                 if (this.filters) {
+                     url += '/' + this.filters.projects;
+                     url += '/' + this.filters.daterange;
+                     url += '/' + this.labels_customer.join(',');
+                 }
+                 this.isClicked = true;
+                 this.$http.get(url).then(function (res) {
+                     this.isCustomerTicketLoad = true;
+                     var tickets_obj = res.body;
+                     var projects_arr = this.filters.projects.split(',');
+                     projects_arr.forEach(p => {
+                         var grid_dict = Object.create(null);
+                         var project_item = tickets_obj[p];
+                         for (var customer_name in project_item) {
+                             var tickets_arr = project_item[customer_name];
+                             var len = tickets_arr.length;
+                             if (len >= 1) {
+                                 grid_dict[customer_name] = tickets_arr;
+                             }
+                         }
+                         if (Object.values(grid_dict).length >= 1) {
+                             this.tickets_ref[p] = grid_dict;
+                         }
+                     });
+                     this.isClicked = false;
+                 });
              }
          }
      };
