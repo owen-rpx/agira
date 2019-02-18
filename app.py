@@ -26,6 +26,17 @@ def favicon():
 def home():
     return render_template('home.html')
 
+@app.route('/world_geo_json')
+def world_geo():
+    file_path = os.path.join(app.root_path, 'static/vender/js/G2Map/data')
+    return send_from_directory(file_path,'world.geo.json')
+
+@app.route('/data_json')
+def data_geo():
+    file_path = os.path.join(app.root_path, 'static/vender/js/G2Map/data')
+    return send_from_directory(file_path,'data.json')
+
+
 # -------- Data API ---------------------------------------------------------- #
 
 
