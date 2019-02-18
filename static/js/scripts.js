@@ -388,7 +388,7 @@
                          });
                          var pointView = chart.view();
                          pointView.source(userData);
-                         pointView.point().position('x*y').size('value', [2, 30]).shape('circle').opacity(0.45).color('#FF2F29').tooltip('date*location*lat*lng*value');
+                         pointView.point().position('x*y').size('value', [2, 30]).shape('circle').opacity(0.45).color('#FF2F29').tooltip('location*lat*lng*value');
 
                          chart.render();
                      }); //end
