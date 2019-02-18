@@ -1,11 +1,86 @@
 [
     {
-        "date": "1990/06/20",
-        "location": "Western Iran",
-        "lat": "37.0",
-        "lng": "49.4",
-        "deaths": "50000",
-        "magnitude": "7.4",
-        "comments": "\nEstimated 40,000 to 50,000 people killed,\nmore than 60,000 injured, 400,000 or more homeless and\nextensive damage and landslides in the Rasht-Qazvin-Zanjan\narea, Iran. Nearly all buildings were destroyed in the\nRudbar-Manjil area. Substantial damage occurred as far away as\nKhalkhal and Now Shahr and slight damage occurred at Tehran.\nFelt in most of northwestern Iran, including Arak, Bakhtaran\nand Tabriz. Slight damage also occurred in southern Azerbaijan,\nUSSR. Felt (VII) at Astra and Lenkoran; (VI) at Dzhibrail,\nLerik, Mossony and Yardyshny; (III) at Baku, USSR. Complex event.\n"
+        "location": "CVS Pharmacy Inc",
+        "lat": "1.2743155",
+        "lng": "103.8399586",
+        "value": "50000",
+        "comments": "\nCVS Pharmacy Inc\n"
+    },
+    {
+        "location": "Cabela's Inc",
+        "lat": "40.5364225",
+        "lng": "-112.3505638",
+        "value": "50000",
+        "comments": "\nCabela's Inc\n"        
+    },
+    {
+        "location": "Centre d'Information RX Ltee",
+        "lat": "45.5842944",
+        "lng": "-73.5740013",
+        "value": "50000",
+        "comments": "\nCentre d'Information RX Ltee\n"        
+    },
+    {
+        "location": "FirstCaribbean International Bank Limited",
+        "lat": "26.5244728",
+        "lng": "-78.834739",
+        "value": "50000",
+        "comments": "\nFirstCaribbean International Bank Limited\n"        
+    },
+    {
+        "location": "Genuine Parts Company",
+        "lat": "35.8304149",
+        "lng": "-95.3443726",
+        "value": "50000",
+        "comments": "\nGenuine Parts Company\n"        
+    },
+    {
+        "location": "Jennie-O Turkey Store Inc",
+        "lat": "45.1055534",
+        "lng": "-94.5850298",
+        "value": "50000",
+        "comments": "\nJennie-O Turkey Store Inc\n"        
+    },
+    {
+        "location": "K&H Bank Zrt",
+        "lat": "47.2302462",
+        "lng": "17.9388109",
+        "value": "50000",
+        "comments": "\nK&H Bank Zrt\n"        
+    },
+    {
+        "location": "MEDHOST",
+        "lat": "34.4622719",
+        "lng": "-94.0650389",
+        "value": "50000",
+        "comments": "\nMEDHOST\n"        
+    },
+    {
+        "location": "Nelnet Incorporated",
+        "lat": "34.1336068",
+        "lng": "-100.8299975",
+        "value": "50000",
+        "comments": "\nNelnet Incorporated\n"        
+    },
+    {
+        "location": "PT Bank UOB Indonesia",
+        "lat": "-2.2413458",
+        "lng": "99.9957513",
+        "value": "50000",
+        "comments": "\nPT Bank UOB Indonesia\n"        
+    },
+    {
+        "location": "PT Multipolar Technology Tbk",
+        "lat": "-6.2204232",
+        "lng": "106.6185791",
+        "value": "50000",
+        "comments": "\nPT Multipolar Technology Tbk\n"        
+    },
+    {
+        "location": "United Overseas Bank Limited",
+        "lat": "1.3150181",
+        "lng": "103.7041618",
+        "value": "50000",
+        "comments": "\nUnited Overseas Bank Limited\n"        
     }
 ]

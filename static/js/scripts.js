@@ -381,14 +381,14 @@
                                  var projectedCoord = dv.geoProjectPosition([obj.lng * 1, obj.lat * 1], 'geoMercator');
                                  obj.x = projectedCoord[0];
                                  obj.y = projectedCoord[1];
-                                 obj.deaths = obj.deaths * 1;
-                                 obj.magnitude = obj.magnitude * 1;
+                                 obj.value = obj.value * 1;
+                                 //obj.magnitude = obj.magnitude * 1;
                                  return obj;
                              }
                          });
                          var pointView = chart.view();
                          pointView.source(userData);
-                         pointView.point().position('x*y').size('deaths', [2, 30]).shape('circle').opacity(0.45).color('#FF2F29').tooltip('date*location*lat*lng*deaths*magnitude');
+                         pointView.point().position('x*y').size('value', [2, 30]).shape('circle').opacity(0.45).color('#FF2F29').tooltip('date*location*lat*lng*value');
 
                          chart.render();
                      }); //end
