@@ -27,6 +27,13 @@
 
           <el-menu-item>
             <template slot="title">
+              <i class="el-icon-view"></i>
+              <router-link to="/view_map" replace>View_heatMap</router-link>
+            </template>
+          </el-menu-item>
+
+          <el-menu-item>
+            <template slot="title">
               <i class="el-icon-setting"></i>
               <router-link to="/settings" replace>Settings</router-link>
             </template>
@@ -183,7 +190,7 @@
 
           </div>
           </div>
-        </script>        
+        </script>
         <script type="x-template" id="view_tmp_date">
           <div class="view">
             <el-row>
@@ -234,6 +241,47 @@
                 </div>
               </el-col>
             </el-row>
+          </div>
+          </div>
+        </script>
+        <script type="x-template" id="view_tmp_map">
+          <div class="view">
+            <el-row>
+              <el-col :span="24">
+              <el-form :inline="true" :model="formInline" class="demo-form-inline">
+
+              <el-form-item label="Project">
+                <el-select v-model="formInline.project" placeholder="Project">
+                  <el-option label="Aldon LMi" value="ALLI"></el-option>
+                  <el-option label="Aldon LMe" value="ALLE"></el-option>
+                  <el-option label="Aldon Web Portal" value="ALWP"></el-option>
+                </el-select>
+              </el-form-item>
+
+              <el-form-item label="Year">
+                <el-select v-model="formInline.year" placeholder="Year">
+                  <el-option label="2019" value="2019"></el-option>
+                  <el-option label="2018" value="2018"></el-option>
+                  <el-option label="2017" value="2017"></el-option>
+                  <el-option label="2016" value="2016"></el-option>
+                </el-select>
+              </el-form-item>
+
+              <el-form-item label="Periods">
+                <el-select v-model="formInline.periods" multiple placeholder="Periods">
+                  <el-option label="Q1" value="Q1"></el-option>
+                  <el-option label="Q2" value="Q2"></el-option>
+                  <el-option label="Q3" value="Q3"></el-option>
+                  <el-option label="Q4" value="Q4"></el-option>
+                </el-select>
+              </el-form-item>
+              <el-button type="primary" @click="onSubmit">Query</el-button>
+              </el-form-item>
+            </el-form>
+          </el-col>
+        </el-row>
+
+          <div v-loading="!isLoad">
           <!-- heatmap -->
           <div id="heatmap_div"></div>
           <!-- heatmap -->
