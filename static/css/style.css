@@ -51,7 +51,22 @@ body,
 .el-menu {
   border-right: 0px;
 }
+.el-menu-item {
+  color: #FFF !important;
+  padding-left: 2px !important;
+  font-size: 16px;
+}
 
+.el-menu-item a{
+  padding: 10px !important;
+  padding-left: 0px !important;
+}
+.el-menu-item [class^=el-icon-] {
+  color: #FFF !important;
+}
+.el-menu-item a:link {
+  color: #FFF !important;
+}
 /* 定制View */
 .view,
 .settings {
