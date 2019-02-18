@@ -303,6 +303,7 @@
                  this.filters.year = 2018;
                  this.filters.periods = ['Q2', 'Q3', 'Q4'].join(',');
                  this.drawCharts();
+                 this.drawHeatMap();
              });
          },
          methods: {
@@ -313,6 +314,11 @@
                  this.filters.year = this.formInline.year;
                  this.filters.periods = this.formInline.periods.join(',');
                  this.drawCharts(this.filters);
+                 this.drawHeatMap();
+             },
+             drawHeatMap() {
+                //draw heat map demo
+                // id="heatmap_div
              },
              drawCharts(filters) {
                  var url = '/api/data/period';
