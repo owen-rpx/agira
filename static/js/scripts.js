@@ -125,18 +125,18 @@
                  this.$http.get(url).then(function (res) {
                      this.isLoad = true;
                      var chart_data_set = res.body;
-                     this.drawBar(chart_data_set['status'], 'status_fs', (_axis, _data) => {
-                         this.labels_status = _axis;
-                         this.datasets_status = _data;
-                     });
-                     this.drawBar(chart_data_set['issue'], 'issue_fs', (_axis, _data) => {
-                         this.labels_issue = _axis;
-                         this.datasets_issue = _data;
-                     });
-                     this.drawBar(chart_data_set['priority'], 'priority_fs', (_axis, _data) => {
-                         this.labels_priority = _axis;
-                         this.datasets_priority = _data;
-                     });
+                    //  this.drawBar(chart_data_set['status'], 'status_fs', (_axis, _data) => {
+                    //      this.labels_status = _axis;
+                    //      this.datasets_status = _data;
+                    //  });
+                    //  this.drawBar(chart_data_set['issue'], 'issue_fs', (_axis, _data) => {
+                    //      this.labels_issue = _axis;
+                    //      this.datasets_issue = _data;
+                    //  });
+                    //  this.drawBar(chart_data_set['priority'], 'priority_fs', (_axis, _data) => {
+                    //      this.labels_priority = _axis;
+                    //      this.datasets_priority = _data;
+                    //  });
 
                      //  this.drawLine(chart_data_set['status'], 'status_line_fs', (_axis, _data) => {
                      //      this.labels_status_line = _axis;
@@ -147,22 +147,22 @@
                      //      this.labels_h_status = _axis;
                      //      this.datasets_h_status = _data;
                      //  });
-                     this.drawHorizontalBar(chart_data_set['version'], 'version_fs', (_axis, _data) => {
-                         this.labels_version = _axis;
-                         this.datasets_version = _data;
-                     });
-                     this.drawHorizontalBar(chart_data_set['customer'], 'customer_fs', (_axis, _data) => {
-                         this.labels_customer = _axis;
-                         this.datasets_customer = _data;
-                     });
+                     //  this.drawHorizontalBar(chart_data_set['version'], 'version_fs', (_axis, _data) => {
+                     //      this.labels_version = _axis;
+                     //      this.datasets_version = _data;
+                     //  });
+                      this.drawHorizontalBar(chart_data_set['customer'], 'customer_fs', (_axis, _data) => {
+                          this.labels_customer = _axis;
+                          this.datasets_customer = _data;
+                      });
                      this.drawHorizontalBar(chart_data_set['component'], 'component_fs', (_axis, _data) => {
                          this.labels_component = _axis;
                          this.datasets_component = _data;
                      });
-                     this.drawHorizontalBar(chart_data_set['discover'], 'discover_fs', (_axis, _data) => {
-                         this.labels_discover = _axis;
-                         this.datasets_discover = _data;
-                     });
+                     //  this.drawHorizontalBar(chart_data_set['discover'], 'discover_fs', (_axis, _data) => {
+                     //      this.labels_discover = _axis;
+                     //      this.datasets_discover = _data;
+                     //  });
 
                  }, function () {
                      console.log('Request failed.');
@@ -237,13 +237,17 @@
              },
              generate_image(chart_key) {
                  var fd = document.getElementById(chart_key);
-                 var canvas = fd.getElementsByTagName('canvas')[0];
-                 var image = canvas.toDataURL({
-                     type: "png",
-                     backgroundColor: '#fff', //不设置此项，导出图片的底色是黑色
-                 });
-                 var a_lk = fd.getElementsByTagName('a')[0];
-                 a_lk.href = image;
+                 if (fd) {
+                     var canvas = fd.getElementsByTagName('canvas')[0];
+                     var image = canvas.toDataURL({
+                         type: "png",
+                         backgroundColor: '#fff', //不设置此项，导出图片的底色是黑色
+                     });
+                     var a_lk = fd.getElementsByTagName('a')[0];
+                     a_lk.href = image;
+                 } else {
+                     console.log('can not find chart section.');
+                 }
              },
              fetch_keys() {
                  this.clean_var();
@@ -360,13 +364,17 @@
 
              generate_image(chart_key) {
                  var fd = document.getElementById(chart_key);
-                 var canvas = fd.getElementsByTagName('canvas')[0];
-                 var image = canvas.toDataURL({
-                     type: "png",
-                     backgroundColor: '#fff', //不设置此项，导出图片的底色是黑色
-                 });
-                 var a_lk = fd.getElementsByTagName('a')[0];
-                 a_lk.href = image;
+                 if (fd) {
+                     var canvas = fd.getElementsByTagName('canvas')[0];
+                     var image = canvas.toDataURL({
+                         type: "png",
+                         backgroundColor: '#fff', //不设置此项，导出图片的底色是黑色
+                     });
+                     var a_lk = fd.getElementsByTagName('a')[0];
+                     a_lk.href = image;
+                 } else {
+                     console.log('can not find chart section.');
+                 }
              }
          }
      };

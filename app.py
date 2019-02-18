@@ -26,15 +26,17 @@ def favicon():
 def home():
     return render_template('home.html')
 
+
 @app.route('/world_geo_json')
 def world_geo():
     file_path = os.path.join(app.root_path, 'static/vender/js/G2Map/data')
-    return send_from_directory(file_path,'world.geo.json')
+    return send_from_directory(file_path, 'world.geo.json')
+
 
 @app.route('/data_json')
 def data_geo():
     file_path = os.path.join(app.root_path, 'static/vender/js/G2Map/data')
-    return send_from_directory(file_path,'data.json')
+    return send_from_directory(file_path, 'data.json')
 
 
 # -------- Data API ---------------------------------------------------------- #
@@ -55,8 +57,9 @@ def getData(projects, daterange):
         projects_set = []
         for project in projects_list:
             projects_set.append(pick_data(project, daterange))
-        charts_type = {'status': 'status', 'issue': 'issue',
-                       'priority': 'priority', 'customer': 'customer', 'version': 'version', 'discover': 'discover', 'component': 'component', }
+        charts_type_bk = {'status': 'status', 'issue': 'issue',
+                          'priority': 'priority', 'customer': 'customer', 'version': 'version', 'discover': 'discover', 'component': 'component', }
+        charts_type = {'customer': 'customer', 'component': 'component', }
         res_dict = {}
         for res_type in charts_type:
             project_type_set = []
@@ -249,32 +252,35 @@ def pick_data(type, daterange):
     start = drange[0]
     end = drange[1]
     df = df[start:end]
-    json_status_response = json.loads(df['Status'].value_counts().to_json())
-    json_issue_response = json.loads(df['Issue Type'].value_counts().to_json())
-    json_priority_response = json.loads(
-        df['Priority'].value_counts().to_json())
     json_customer_response = json.loads(
         df['Custom field (Affected Customers)'].value_counts().to_json())
     json_comp_response = json.loads(df['Component/s'].value_counts().to_json())
-    json_version_response = json.loads(
-        df['Affects Version/s'].value_counts().to_json())
-    json_discover_response = json.loads(
-        df['Custom field (Discovered by)'].value_counts().to_json())
 
-    # ke = df[['Issue key','Summary']][df['Custom field (Affected Customers)'] == 'United Overseas Bank Limited']
-    # print(ke.to_json())
-    # ke = df['Issue key'][df['Custom field (Affected Customers)']
-    #                      == 'United Overseas Bank Limited']
-    # print(ke.tolist())
     res = {
-        'status': json_status_response,
-        'issue': json_issue_response,
-        'priority': json_priority_response,
         'customer': json_customer_response,
-        'component': json_comp_response,
-        'version': json_version_response,
-        'discover': json_discover_response,
+        'component': json_comp_response
     }
+    # json_status_response = json.loads(df['Status'].value_counts().to_json())
+    # json_issue_response = json.loads(df['Issue Type'].value_counts().to_json())
+    # json_priority_response = json.loads(
+    #     df['Priority'].value_counts().to_json())
+    # json_customer_response = json.loads(
+    #     df['Custom field (Affected Customers)'].value_counts().to_json())
+    # json_comp_response = json.loads(df['Component/s'].value_counts().to_json())
+    # json_version_response = json.loads(
+    #     df['Affects Version/s'].value_counts().to_json())
+    # json_discover_response = json.loads(
+    #     df['Custom field (Discovered by)'].value_counts().to_json())
+
+    # res = {
+    #     'status': json_status_response,
+    #     'issue': json_issue_response,
+    #     'priority': json_priority_response,
+    #     'customer': json_customer_response,
+    #     'component': json_comp_response,
+    #     'version': json_version_response,
+    #     'discover': json_discover_response,
+    # }
     return res
 
 
