@@ -81,6 +81,51 @@ def getTickets(projects, daterange, keys):
     return Response(json_str)
 
 
+@app.route('/api/data/period/<project>/<year>/<period>', methods=['GET'])
+def getPeriod(project, year, period):
+    projects_dict = {
+        "customer": {
+            "data": [
+                {
+                    "CVS Pharmacy Inc": 2,
+                    "Cabela's Inc": 1,
+                    "Centre d'Information RX Ltee": 14,
+                    "PT Multipolar Technology Tbk": 8,
+                    "United Overseas Bank Limited": 15
+                },
+                {
+                    "CVS Pharmacy Inc": 1,
+                    "Cabela's Inc": 2,
+                    "Centre d'Information RX Ltee": 4,
+                    "PT Multipolar Technology Tbk": 5,
+                    "United Overseas Bank Limited": 2
+                },
+                {
+                    "CVS Pharmacy Inc": 10,
+                    "Cabela's Inc": 17,
+                    "Centre d'Information RX Ltee": 9,
+                    "PT Multipolar Technology Tbk": 10,
+                    "United Overseas Bank Limited": 21
+                },
+            ],
+            "label": [
+                "Q2",
+                "Q3",
+                "Q4"
+            ],
+            "x_axis": [
+                "CVS Pharmacy Inc",
+                "Cabela's Inc",
+                "Centre d'Information RX Ltee",
+                "PT Multipolar Technology Tbk",
+                "United Overseas Bank Limited"
+            ]
+        },
+    }
+    json_str = json.dumps(projects_dict)
+    return Response(json_str)
+
+
 def pick_tickets_data(type, daterange, keys_list):
     dataPath = os.path.join(app.root_path, 'data')
     inputfile_dir = {'ALLI': 'demo_lmi.csv',

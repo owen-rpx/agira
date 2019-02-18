@@ -277,6 +277,151 @@
              }
          }
      };
+
+     var view_date = {
+         //  props: ['isLoad', 'labels_line', 'data_line'],
+         template: '#view_tmp_date',
+         data: function () {
+             return {
+                 formInline: {
+                     project: 'ALLE',
+                     year: 2018,
+                     periods: ['Q2', 'Q3', 'Q4']
+                 },
+                 filters: Object.create(null),
+                 chart_sapn: 22,
+                 BKG: ['#60acfc', '#5bc49f', '#feb64d'],
+                 isLoad: false,
+                 filters: Object.create(null),
+                 labels_customer: [],
+                 datasets_customer: []
+             }
+         },
+         created: function () {
+             this.$nextTick(function () {
+                 this.filters.project = 'ALLE';
+                 this.filters.year = 2018;
+                 this.filters.periods = ['Q2', 'Q3', 'Q4'].join(',');
+                 this.drawCharts();
+             });
+         },
+         methods: {
+             onSubmit() {
+                 this.isLoad = false;
+                 console.log(this.formInline);
+                 this.filters.project = this.formInline.project;
+                 this.filters.year = this.formInline.year;
+                 this.filters.periods = this.formInline.periods.join(',');
+                 this.drawCharts(this.filters);
+             },
+             drawCharts(filters) {
+                 var url = '/api/data/period';
+                 var _f = filters || this.filters;
+                 if (_f) {
+                     url += '/' + _f.project;
+                     url += '/' + _f.year;
+                     url += '/' + _f.periods;
+                 }
+                 this.$http.get(url).then(function (res) {
+                     this.isLoad = true;
+                     //  var test_data = {
+                     //      customer: {
+                     //         "data": [
+                     //             {
+                     //                 "CVS Pharmacy Inc": 2,
+                     //                 "Cabela's Inc": 1,
+                     //                 "Centre d'Information RX Ltee": 14,
+                     //                 "PT Multipolar Technology Tbk": 8,
+                     //                 "United Overseas Bank Limited": 15
+                     //             },
+                     //             {
+                     //                 "CVS Pharmacy Inc": 1,
+                     //                 "Cabela's Inc": 2,
+                     //                 "Centre d'Information RX Ltee": 4,
+                     //                 "PT Multipolar Technology Tbk": 5,
+                     //                 "United Overseas Bank Limited": 2
+                     //             },
+                     //         ],
+                     //         "label": [
+                     //             "Q2",
+                     //             "Q3"
+                     //         ],
+                     //         "x_axis": [
+                     //             "CVS Pharmacy Inc",
+                     //             "Cabela's Inc",
+                     //             "Centre d'Information RX Ltee",
+                     //             "PT Multipolar Technology Tbk",
+                     //             "United Overseas Bank Limited"
+                     //         ]
+                     //     },
+                     //  };
+                     var chart_data_set = res.body;
+                     this.drawBar(chart_data_set['customer'], 'customer_fs', (_axis, _data) => {
+                         this.labels_customer = _axis;
+                         this.datasets_customer = _data;
+                     });
+
+                 }, function () {
+                     console.log('Request failed.');
+                 });
+             },
+             drawHorizontalBar(chart_data_set, id, callback) {
+                 var chart_data = JSON.parse(JSON.stringify(chart_data_set));
+                 var data = chart_data.data;
+                 var labels = chart_data.x_axis;
+                 var label = chart_data.label;
+                 var data_set = [];
+                 for (var i = 0, len = data.length; i < len; i++) {
+                     var item = data[i];
+                     var _d = [];
+                     for (var k = 0, k_len = labels.length; k < k_len; k++) {
+                         _d.push(item[labels[k]]);
+                     }
+                     var ds = {};
+                     ds.label = label[i];
+                     ds.backgroundColor = this.BKG[i];
+                     ds.data = _d;
+                     data_set.push(ds);
+                 }
+
+                 callback(labels, data_set)
+                 setTimeout(() => this.generate_image(id), 10);
+             },
+             drawBar(chart_data_set, id, callback) {
+                 var chart_data = JSON.parse(JSON.stringify(chart_data_set));
+                 var data = chart_data.data;
+                 var labels = chart_data.label;
+                 var x_axis = chart_data.x_axis;
+                 var data_set = [];
+                 for (var i = 0, len = labels.length; i < len; i++) {
+                     var item = data[i];
+                     var _d = [];
+                     for (var k = 0, k_len = x_axis.length; k < k_len; k++) {
+                         _d.push(item[x_axis[k]]);
+                     }
+                     var ds = {};
+                     ds.label = labels[i];
+                     ds.backgroundColor = this.BKG[i];
+                     ds.data = _d;
+                     data_set.push(ds);
+                 }
+
+                 callback(x_axis, data_set);
+                 setTimeout(() => this.generate_image(id), 10);
+             },
+
+             generate_image(chart_key) {
+                 var fd = document.getElementById(chart_key);
+                 var canvas = fd.getElementsByTagName('canvas')[0];
+                 var image = canvas.toDataURL({
+                     type: "png",
+                     backgroundColor: '#fff', //不设置此项，导出图片的底色是黑色
+                 });
+                 var a_lk = fd.getElementsByTagName('a')[0];
+                 a_lk.href = image;
+             }
+         }
+     };
      var setting = {
          template: '#setting_tmp',
          data: function () {
@@ -404,6 +549,10 @@
          {
              path: '/view',
              component: view
+         },
+         {
+             path: '/view_date',
+             component: view_date
          },
          {
              path: '/settings',
