@@ -48,7 +48,7 @@ def getMap(project, years):
     min_year = min(years)
     scope_year += min_year + '-01-01,'
     scope_year += max_year + '-12-31'
-    print(scope_year)
+    # print(scope_year)
     locations = {}
     locations['Brotherhood Mutual Insurance Company'] = ['41.1372522','-85.1424274']
     locations['Brunswick Boat Group'] = ['41.08711','-85.2398857']
