@@ -33,7 +33,7 @@ python app.py
 
 - Flask
 - Vue.js
-- Element-ui
+- Element
 - Chat.js
 - AntV G2
 - pandas
