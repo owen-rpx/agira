@@ -82,5 +82,54 @@
         "lng": "103.7041618",
         "value": "30",
         "comments": "\nUnited Overseas Bank Limited\n"        
+    },
+    {
+        "location": "Brotherhood Mutual Insurance Company",
+        "lat": "41.1372522",
+        "lng": "-85.1424274",
+        "value": "30",
+        "comments": "\nBrotherhood Mutual Insurance Company\n"        
+    },
+    {
+        "location": "Brunswick Boat Grou",
+        "lat": "41.08711",
+        "lng": "-85.2398857",
+        "value": "30",
+        "comments": "\nBrunswick Boat Grou\n"        
+    },
+    {
+        "location": "Fiserv Solutions LLC",
+        "lat": "37.8938286",
+        "lng": "-105.9314083",
+        "value": "30",
+        "comments": "\nFiserv Solutions LLC\n"        
+    },
+    {
+        "location": "McKesson Corporation",
+        "lat": "37.2440688",
+        "lng": "-105.9334896",
+        "value": "30",
+        "comments": "\nMcKesson Corporation\n"        
+    },
+    {
+        "location": "McKesson Medical Surgical",
+        "lat": "36.598679",
+        "lng": "-105.9355734",
+        "value": "30",
+        "comments": "\nMcKesson Medical Surgical\n"        
+    },
+    {
+        "location": "Piraeus Bank SA",
+        "lat": "47.9035435",
+        "lng": "8.5121932",
+        "value": "30",
+        "comments": "\nPiraeus Bank SA\n"        
+    },
+    {
+        "location": "Parsons Services Company (USA)",
+        "lat": "32.5086087",
+        "lng": "-102.0901254",
+        "value": "30",
+        "comments": "\nParsons Services Company (USA)\n"        
     }
 ]
