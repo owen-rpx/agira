@@ -39,6 +39,7 @@ python app.py
 
 | A | B | C |
 | ------ | ------ | ------ |
+| <img src="http://pandas.pydata.org/_static/pandas_logo.png" width=100 height=100 /> | |  
 | <img src="http://flask.pocoo.org/docs/1.0/_static/flask.png" width=100 height=100 /> | <img src="https://vuejs.org/images/logo.png" width=100 height=100 /> | <img src="https://vue-chartjs.org/vue-chartjs.png" width=100 height=100 />
 | <img src="https://camo.githubusercontent.com/462f24153b8e8739c8ea71f7102585c4cb0e1575/68747470733a2f2f63646e2e7261776769742e636f6d2f456c656d6546452f656c656d656e742f6465762f656c656d656e745f6c6f676f2e737667" width=200 height=100 /> | <img src="https://zos.alipayobjects.com/rmsportal/aGpKpuxoGfZqJobMPLvj.svg" width=100 height=100 /> | <img src="https://zos.alipayobjects.com/rmsportal/aGpKpuxoGfZqJobMPLvj.svg" width=100 height=100 />
 
