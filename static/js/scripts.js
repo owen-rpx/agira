@@ -125,18 +125,18 @@
                  this.$http.get(url).then(function (res) {
                      this.isLoad = true;
                      var chart_data_set = res.body;
-                    //  this.drawBar(chart_data_set['status'], 'status_fs', (_axis, _data) => {
-                    //      this.labels_status = _axis;
-                    //      this.datasets_status = _data;
-                    //  });
-                    //  this.drawBar(chart_data_set['issue'], 'issue_fs', (_axis, _data) => {
-                    //      this.labels_issue = _axis;
-                    //      this.datasets_issue = _data;
-                    //  });
-                    //  this.drawBar(chart_data_set['priority'], 'priority_fs', (_axis, _data) => {
-                    //      this.labels_priority = _axis;
-                    //      this.datasets_priority = _data;
-                    //  });
+                     //  this.drawBar(chart_data_set['status'], 'status_fs', (_axis, _data) => {
+                     //      this.labels_status = _axis;
+                     //      this.datasets_status = _data;
+                     //  });
+                     //  this.drawBar(chart_data_set['issue'], 'issue_fs', (_axis, _data) => {
+                     //      this.labels_issue = _axis;
+                     //      this.datasets_issue = _data;
+                     //  });
+                     //  this.drawBar(chart_data_set['priority'], 'priority_fs', (_axis, _data) => {
+                     //      this.labels_priority = _axis;
+                     //      this.datasets_priority = _data;
+                     //  });
 
                      //  this.drawLine(chart_data_set['status'], 'status_line_fs', (_axis, _data) => {
                      //      this.labels_status_line = _axis;
@@ -151,10 +151,10 @@
                      //      this.labels_version = _axis;
                      //      this.datasets_version = _data;
                      //  });
-                      this.drawHorizontalBar(chart_data_set['customer'], 'customer_fs', (_axis, _data) => {
-                          this.labels_customer = _axis;
-                          this.datasets_customer = _data;
-                      });
+                     this.drawHorizontalBar(chart_data_set['customer'], 'customer_fs', (_axis, _data) => {
+                         this.labels_customer = _axis;
+                         this.datasets_customer = _data;
+                     });
                      this.drawHorizontalBar(chart_data_set['component'], 'component_fs', (_axis, _data) => {
                          this.labels_component = _axis;
                          this.datasets_component = _data;
@@ -378,15 +378,15 @@
              }
          }
      };
+
      var view_map = {
          //  props: ['isLoad', 'labels_line', 'data_line'],
          template: '#view_tmp_map',
          data: function () {
              return {
                  formInline: {
-                     project: 'ALLE',
-                     year: 2018,
-                     periods: ['Q2', 'Q3', 'Q4']
+                     project: 'ALLI',
+                     years: [2019, 2018, 2017]
                  },
                  filters: Object.create(null),
                  chart_sapn: 22,
@@ -397,10 +397,8 @@
          },
          created: function () {
              this.$nextTick(function () {
-                 this.filters.project = 'ALLE';
-                 this.filters.year = 2018;
-                 this.filters.periods = ['Q2', 'Q3', 'Q4'].join(',');
-
+                 this.filters.project = 'ALLI';
+                 this.filters.years = [2019, 2018, 2017].join(',');
                  this.drawHeatMap();
 
              });
@@ -410,93 +408,103 @@
                  this.isLoad = false;
                  console.log(this.formInline);
                  this.filters.project = this.formInline.project;
-                 this.filters.year = this.formInline.year;
-                 this.filters.periods = this.formInline.periods.join(',');
+                 this.filters.years = this.formInline.years.join(',');
+                 //  this.filters.periods = this.formInline.periods.join(',');
                  this.drawHeatMap();
              },
              drawHeatMap() {
                  document.getElementById('heatmap_div').innerHTML = '';
-                 setTimeout(() => {
-                     this.$http.get('/world_geo_json').then(function (mapData) {
-                         this.$http.get('/data_json').then(function (data) {
-                             this.isLoad = true;
-                             var chart = new G2.Chart({
-                                 container: 'heatmap_div',
-                                 forceFit: true,
-                                 height: window.innerHeight,
-                                 padding: [0, 20, 40]
-                             });
-                             // force sync scales
-                             chart.scale({
-                                 x: {
-                                     sync: true,
-                                     nice: false
-                                 },
-                                 y: {
-                                     sync: true,
-                                     nice: false
-                                 }
-                             });
-                             chart.coord().reflect();
-                             chart.legend(false);
-                             chart.axis(false);
+                 var url = '/api/data/map';
+                 var _f = this.filters;
+                 if (_f) {
+                     url += '/' + _f.project;
+                     url += '/' + _f.years;
+                 }
 
-                             // style the tooltip
-                             chart.tooltip({
-                                 showTitle: false,
-                                 containerTpl: '<div class="g2-tooltip"><table class="g2-tooltip-list"></table></div>',
-                                 itemTpl: '<tr data-index="{index}"><td style="padding:5px;background-color:#545454;">{name}</td><td style="padding:5px;background-color:#fff;color:#000;">{value}</td></tr>',
-                                 'g2-tooltip': {
-                                     borderRadius: '2px',
-                                     backgroundColor: '#DDDDDD',
-                                     padding: 0,
-                                     border: '1px solid #333'
-                                 }
-                             });
-                             // data set
-                             var ds = new DataSet();
 
-                             // draw the map
-                             var dv = ds.createView('back').source(mapData.body, {
-                                 type: 'GeoJSON'
-                             }).transform({
-                                 type: 'geo.projection',
-                                 projection: 'geoMercator',
-                                 as: ['x', 'y', 'centroidX', 'centroidY']
-                             });
-                             var bgView = chart.view();
-                             bgView.source(dv);
-                             bgView.tooltip(false);
-                             bgView.polygon().position('x*y').style({
-                                 fill: '#DDDDDD',
-                                 stroke: '#b1b1b1',
-                                 lineWidth: 0.5,
-                                 fillOpacity: 0.85
-                             });
+                 this.$http.get('/world_geo_json').then(function (mapData) {
+                     //  this.$http.get('/data_json').then(function (data) {
+                     this.$http.get(url).then(function (data) {
+                         this.isLoad = true;
+                         var chart = new G2.Chart({
+                             container: 'heatmap_div',
+                             forceFit: true,
+                             height: window.innerHeight,
+                             padding: [0, 20, 40]
+                         });
+                         // force sync scales
+                         chart.scale({
+                             x: {
+                                 sync: true,
+                                 nice: false
+                             },
+                             y: {
+                                 sync: true,
+                                 nice: false
+                             }
+                         });
+                         chart.coord().reflect();
+                         chart.legend(false);
+                         chart.axis(false);
 
-                             // draw the bubble plot
-                             var userData = ds.createView().source(data.body);
-                             userData.transform({
-                                 type: 'map',
-                                 callback: function callback(obj) {
-                                     var projectedCoord = dv.geoProjectPosition([obj.lng * 1, obj.lat * 1], 'geoMercator');
-                                     obj.x = projectedCoord[0];
-                                     obj.y = projectedCoord[1];
-                                     obj.value = obj.value * 1;
-                                     return obj;
-                                 }
-                             });
-                             var pointView = chart.view();
-                             pointView.source(userData);
-                             pointView.point().position('x*y').size('value', [2, 30]).shape('circle').opacity(0.45).color('#FF2F29').tooltip('location*lat*lng*value');
+                         // style the tooltip
+                         chart.tooltip({
+                             showTitle: false,
+                             containerTpl: '<div class="g2-tooltip"><table class="g2-tooltip-list"></table></div>',
+                             itemTpl: '<tr data-index="{index}"><td style="padding:5px;background-color:#fff;color:#000;">{value}</td></tr>',
+                             'g2-tooltip': {
+                                 borderRadius: '2px',
+                                 backgroundColor: '#DDDDDD',
+                                 padding: 0,
+                                 border: '1px solid #333'
+                             }
+                         });
+                         // data set
+                         var ds = new DataSet();
 
-                             chart.render();
-                         }); //end
-                     });
+                         // draw the map
+                         var dv = ds.createView('back').source(mapData.body, {
+                             type: 'GeoJSON'
+                         }).transform({
+                             type: 'geo.projection',
+                             projection: 'geoMercator',
+                             as: ['x', 'y', 'centroidX', 'centroidY']
+                         });
+                         var bgView = chart.view();
+                         bgView.source(dv);
+                         bgView.tooltip(false);
+                         bgView.polygon().position('x*y').style({
+                             fill: '#CCC',
+                             stroke: '#b3b3b3',
+                             lineWidth: 1,
+                             fillOpacity: 0.5
+                         });
+
+                         // draw the bubble plot
+                         var userData = ds.createView().source(data.body);
+                         userData.transform({
+                             type: 'map',
+                             callback: function callback(obj) {
+                                 var projectedCoord = dv.geoProjectPosition([obj.lng * 1, obj.lat * 1], 'geoMercator');
+                                 obj.x = projectedCoord[0];
+                                 obj.y = projectedCoord[1];
+                                 obj.value = obj.value * 1;
+                                 return obj;
+                             }
+                         });
+                         var pointView = chart.view();
+                         pointView.source(userData);
+                         //  pointView.point().position('x*y').size('value', [2, 30]).shape('circle').opacity(0.45).color('#FF2F29').tooltip('location*value');
+                         pointView.point().position('x*y').size('value', [2, 30]).shape('circle').opacity(0.45).color('#FF2F29').tooltip('location*value');
+
+                         chart.render();
+                     }); //end
                  });
+
              }
          }
      };
+
      var setting = {
          template: '#setting_tmp',
          data: function () {
@@ -612,6 +620,7 @@
              },
          }
      };
+
      var no_found = {
          template: '<div>404 page</div>'
      };

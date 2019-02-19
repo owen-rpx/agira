@@ -260,31 +260,38 @@
               </el-form-item>
 
               <el-form-item label="Year">
-                <el-select v-model="formInline.year" placeholder="Year">
+                <el-select v-model="formInline.years" multiple placeholder="Year">
                   <el-option label="2019" value="2019"></el-option>
                   <el-option label="2018" value="2018"></el-option>
                   <el-option label="2017" value="2017"></el-option>
                   <el-option label="2016" value="2016"></el-option>
+                  <el-option label="2015" value="2015"></el-option>
+                  <el-option label="2014" value="2014"></el-option>
+                  <el-option label="2013" value="2013"></el-option>
+                  <el-option label="2012" value="2012"></el-option>
+                  <el-option label="2011" value="2011"></el-option>
+                  <el-option label="2010" value="2010"></el-option>
                 </el-select>
               </el-form-item>
 
-              <el-form-item label="Periods">
+              <!-- <el-form-item label="Periods">
                 <el-select v-model="formInline.periods" multiple placeholder="Periods">
                   <el-option label="Q1" value="Q1"></el-option>
                   <el-option label="Q2" value="Q2"></el-option>
                   <el-option label="Q3" value="Q3"></el-option>
                   <el-option label="Q4" value="Q4"></el-option>
                 </el-select>
-              </el-form-item>
+              </el-form-item> -->
+
               <el-button type="primary" @click="onSubmit">Query</el-button>
               </el-form-item>
             </el-form>
           </el-col>
         </el-row>
 
-          <div v-loading="!isLoad">
+          <div v-loading="!isLoad" style="margin-top:20px;">
           <!-- heatmap -->
-          <div id="heatmap_div"></div>
+            <div id="heatmap_div"></div>
           <!-- heatmap -->
           </div>
           </div>

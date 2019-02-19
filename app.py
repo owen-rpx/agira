@@ -39,6 +39,63 @@ def data_geo():
     return send_from_directory(file_path, 'data.json')
 
 
+@app.route('/api/data/map/<project>/<years>', methods=['GET'])
+def getMap(project, years):
+    years = years.split(',')
+    ln = len(years)
+    scope_year = ''
+    max_year = max(years)
+    min_year = min(years)
+    scope_year += min_year + '-01-01,'
+    scope_year += max_year + '-12-31'
+    print(scope_year)
+    locations = {}
+    locations['Brotherhood Mutual Insurance Company'] = ['41.1372522','-85.1424274']
+    locations['Brunswick Boat Group'] = ['41.08711','-85.2398857']
+    locations['Fiserv Solutions LLC'] = ['37.8938286','-105.9314083']
+    locations['McKesson Corporation'] = ['37.2440688','-105.9334896']
+    locations['McKesson Medical Surgical'] = ['36.598679','-105.9355734']
+    locations['Piraeus Bank SA'] = ['47.9035435','8.5121932']
+    locations['Parsons Services Company (USA)'] = ['32.5086087','-102.0901254']
+    # use
+    locations['Jennie-O Turkey Store Inc'] = ['45.1055534', '-94.5850298']
+    locations['FirstCaribbean International Bank Limited'] = [
+        '26.5244728', '-78.834739']
+    locations['Genuine Parts Company'] = ['35.8304149', '-95.3443726']
+    locations['MEDHOST'] = ['34.4622719', '-94.0650389']
+    locations['Nelnet Incorporated'] = ['34.1336068', '-100.8299975']
+    locations['PT Bank UOB Indonesia'] = ['-2.2413458', '99.9957513']
+    locations['PT Multipolar Technology Tbk'] = ['-6.2204232', '106.6185791']
+    locations['United Overseas Bank Limited'] = ['1.3150181', '103.7041618']
+    locations['CVS Pharmacy Inc'] = ['1.2743155', '103.8399586']
+    # additional
+    locations['Multibank Inc'] = ['38.99671', '-3.58490']
+    locations['CorVu Australasia Pty Ltd'] = ['-24.9371870000', '134.2177320000']
+    locations['Ralph Lauren'] = ['36.7783','-119.4179']
+    locations['Cracker Barrel Old Country Store'] = ['40.7128','-74.0060']
+    locations['Swift Transportation Corp'] = ['33.4484','-112.0740']
+    locations['Alpha Bank SA'] = ['39.0742','21.8243']
+    locations['Qatar International Islamic Bank'] = ['25.3548','51.1839']
+
+    res_type = 'customer'
+    res_list = []
+    res_oral = pick_map_data(project, scope_year)[res_type]
+    for cs in res_oral:
+        # print({'customer': cs})
+        if cs in locations:
+            cust_item = {}
+            lc = locations[cs]
+            cust_item['location'] = cs
+            cust_item['lat'] = lc[0]
+            cust_item['lng'] = lc[1]
+            cust_item['value'] = res_oral[cs]
+            cust_item['comments'] = cs
+            # print(cust_item)
+            res_list.append(cust_item)
+    # print(res_dict)
+    json_str = json.dumps(res_list)
+    return Response(json_str)
+
 # -------- Data API ---------------------------------------------------------- #
 
 
@@ -229,6 +286,35 @@ def generate_axis_data(data_list):
                 item[x] = 0
         gen_list.append(item)
     return {'x_axis': x_axis, 'data': gen_list}
+
+
+def pick_map_data(type, daterange):
+    dataPath = os.path.join(app.root_path, 'data')
+    inputfile_dir = {'ALLI': 'demo_lmi.csv',
+                     'ALLE': 'demo_lme.csv', 'ALWP': 'demo_wp.csv'}
+    iptdir = dataPath+'/'+inputfile_dir[type]
+    df = pd.read_csv(iptdir, header=0, sep=',', encoding='ISO-8859-1',
+                     low_memory=False, mangle_dupe_cols=True)
+
+    cols = ['Issue key', 'Summary', 'Issue Type', 'Project key', 'Project name', 'Priority', 'Project lead', 'Status', 'Assignee', 'Reporter', 'Created', 'Updated',
+            'Affects Version/s', 'Custom field (Affected Customers)', 'Component/s', 'Custom field (Discovered by)']
+    df = df[cols]
+
+    df['Created'] = pd.to_datetime(df['Created'])
+
+    df = df.set_index('Created')
+    # start = '2018-01-01'
+    # end = '2019-01-01'
+    drange = daterange.split(',')
+    start = drange[0]
+    end = drange[1]
+    df = df[start:end]
+    json_customer_response = json.loads(
+        df['Custom field (Affected Customers)'].value_counts().to_json())
+    res = {
+        'customer': json_customer_response
+    }
+    return res
 
 
 def pick_data(type, daterange):
