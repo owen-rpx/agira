@@ -1,11 +1,39 @@
 Vue.component('alm-line-chart', {
-    props: ['labels', 'datasets'],
+    props: ['labels', 'label','data'],
     extends: VueChartJs.Line,
     mixins: [VueChartJs.mixins.reactiveProp],
     mounted() {
         this.renderChart({
             labels: this.labels,
-            datasets: this.datasets
+            datasets: [{
+                label: this.label,
+                borderColor: "#60acfc", //路径颜色
+                pointBackgroundColor: "#60acfc", //数据点颜色
+                pointBorderColor: "#fff", //数据点边框颜色
+                data: this.data
+            }]
+        }, {
+            responsive: true,
+            maintainAspectRatio: false
+        })
+    }
+});
+Vue.component('alm-pie-chart', {
+    props: ['labels', 'ds'],
+    extends: VueChartJs.Pie,
+    mounted() {
+        this.renderChart({
+            labels: this.labels,
+            datasets: [{
+                    backgroundColor: [
+                        '#41B883',
+                        '#00D8FF',
+                        '#E46651',
+                        '#DD1B16'
+                    ],
+                    data: this.ds
+                }
+            ]
         }, {
             responsive: true,
             maintainAspectRatio: false

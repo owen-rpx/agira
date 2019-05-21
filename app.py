@@ -9,6 +9,7 @@ import sys
 import os
 import pandas as pd
 import io
+import re
 sys.stdout = io.TextIOWrapper(
     sys.stdout.buffer, encoding='utf8')  # 改变标准输出的默认编码
 app = Flask(__name__)
@@ -104,6 +105,88 @@ def charts(type):
     return type + ' back'
 
 
+@app.route('/api/log/<log_type>/<file_num>', methods=['GET'])
+def getLog(log_type, file_num):
+    print(log_type)
+    dataPath = os.path.join(app.root_path, 'data')
+    fileName = dataPath +'/Rocket-Lifecycle-Manager-Web-Portal--production--out-'+str(file_num)+'.log'
+    # fileName = dataPath +'/Rocket-Lifecycle-Manager-Web-Portal--production--out-99.log'
+    # fileName = dataPath +'/Rocket-Lifecycle-Manager-Web-Portal--production--out-98.log'
+    # p1 = '/api/lme/tasks/parts/paths'
+    # p1 = 'POST /login'
+    # p1 = '/api/lme/tasks/\d+/subtasks'
+    # 2019-05-11T17:38:04.393Z - info
+    reg = {'LT':'POST /login','PPT':'/api/lme/tasks/parts/paths','ST':'/api/lme/tasks/\d+/subtasks','REL':'/api/lme/tasks/\d+/release','DPL':'/api/lme/tasks/\d+/deployments','RPT':'/api/lme/tasks/\d+/reports','PAR':'/api/lme/tasks/\d+/parts'}
+    patt = re.compile(reg[log_type])
+    tm = re.compile('\d+\.\d+\s+ms')
+    dat = re.compile('\d+-\d+-\d+T\d+:\d+:\d+\.\d+Z')
+    # 
+    res_dict = {}
+    lst_data = []
+    lst_x_axis = []
+    lst_period = []
+    with open(fileName) as txtData:
+        lines=txtData.readlines()
+        line_num = 1
+        for line in lines:
+            period = dat.findall(line)
+            if len(period) >= 1:
+                lst_period.append(period[0])
+            # fl = re.findall(patt, line)
+            fl = patt.findall(line)
+            if len(fl) >= 1:
+                time_s = tm.findall(line)
+                # print(len(fl))
+                if len(time_s) >= 1:
+                    val_tm = time_s[0].split(' ')[0]
+                    val_sec = float(val_tm)//1000
+                    lst_data.append(val_sec)
+                else:
+                    lst_data.append(300)
+                    # print(0)
+                lst_x_axis.append('L-' + str(line_num))
+            line_num += 1
+    # print(lst_period)
+    data = {
+        'period': min(lst_period).split('T')[0]+' ~ '+max(lst_period).split('T')[0],
+        'x_axis': lst_x_axis,
+        'data': lst_data
+    }
+
+    time_30 = 30
+    time_60 = 60
+    time_out = 120
+    lst_time_30 = []
+    lst_time_60 = []
+    lst_time_out = []
+    lst_max_time = []
+    for d in lst_data:
+        if d<=time_30:
+            lst_time_30.append(d)
+        elif d>time_30 and d<=time_60:
+            lst_time_60.append(d)
+        elif d>time_60 and d<=time_out:
+            lst_time_out.append(d)
+        elif d>time_out:
+             lst_max_time.append(d)
+    # 
+    total = len(lst_data)
+    data_pie = {
+        'x_axis':['< 30s '+getPercent(len(lst_time_30),total),'<60 s '+getPercent(len(lst_time_60),total),'< 120 s '+getPercent(len(lst_time_out),total),'timeout '+getPercent(len(lst_max_time),total)],
+        'data_label':[getPercent(len(lst_time_30),total),getPercent(len(lst_time_60),total),getPercent(len(lst_time_out),total),getPercent(len(lst_max_time),total)],
+        'data':[len(lst_time_30),len(lst_time_60),len(lst_time_out),len(lst_max_time)]
+    }
+    # 
+    res_dict['customer'] = data
+    res_dict['customer_pie'] = data_pie
+    json_str = json.dumps(res_dict)
+    return Response(json_str)
+
+def getPercent(item, total):
+    per = str(round(float(item/total),2))
+    return '['+str(per) + '%]'
+    # return '['+str(per) + '% ('+str(item)+')]'
+
 @app.route('/api/data', methods=['GET'], defaults={'projects': 'ALLI,ALLE,ALWP', 'daterange': '2018-01-01,2018-12-31'})
 @app.route('/api/data/<projects>/<daterange>', methods=['GET'])
 def getData(projects, daterange):
@@ -197,6 +280,14 @@ def getPeriod(project, year, period):
     return Response(json_str)
 
 
+def read_log():
+    dataPath = os.path.join(app.root_path, 'data')
+    fileName = dataPath +'/Rocket-Lifecycle-Manager-Web-Portal--production--out-0.log'
+    with open(fileName) as txtData:
+        lines=txtData.readlines()
+        for line in lines:
+            print(line)
+    
 def pick_tickets_data(type, daterange, keys_list):
     dataPath = os.path.join(app.root_path, 'data')
     inputfile_dir = {'ALLI': 'demo_lmi.csv',

@@ -14,6 +14,13 @@
           <el-menu-item>
             <template slot="title">
               <i class="el-icon-view"></i>
+              <router-link to="/view_log" replace>ViewLog</router-link>
+            </template>
+          </el-menu-item>
+
+          <el-menu-item>
+            <template slot="title">
+              <i class="el-icon-view"></i>
               <router-link to="/view" replace>View</router-link>
             </template>
           </el-menu-item>
@@ -44,6 +51,71 @@
       <!-- main -->
       <el-main>
         <router-view></router-view>
+        <script type="x-template" id="view_tmp_log">
+          <div class="view">
+            <el-row>
+              <el-col :span="24">
+              <el-form :inline="true" :model="formInline" class="demo-form-inline">
+
+              <el-form-item label="Log type">
+                <el-select v-model="formInline.type" placeholder="Type">
+                  <el-option label="Login Time" value="LT"></el-option>
+                  <el-option label="Parts Time" value="PAR"></el-option>
+                  <el-option label="Part of Path Time" value="PPT"></el-option>
+                  <el-option label="Release Time" value="REL"></el-option>
+                  <el-option label="Deployments Time" value="DPL"></el-option>
+                  <el-option label="Report Time" value="RPT"></el-option>
+                  <el-option label="Subtask Time" value="ST"></el-option>
+                </el-select>
+              </el-form-item>
+
+              <el-form-item label="Log files">
+                <el-select v-model="formInline.file" placeholder="File">
+                  <el-option value="100"></el-option>
+                  <el-option value="99"></el-option>
+                  <el-option value="98"></el-option>
+                  <el-option value="97"></el-option>
+                  <el-option value="96"></el-option>
+                  <el-option value="95"></el-option>
+                  <el-option value="94"></el-option>
+                  <el-option value="93"></el-option>
+                  <el-option value="92"></el-option>
+                  <el-option value="91"></el-option>
+                  <el-option value="90"></el-option>
+                  <el-option value="0"></el-option>
+                </el-select>
+              </el-form-item>
+
+              <el-button type="primary" @click="onSubmit">Query</el-button>
+              </el-form-item>
+            </el-form>
+          </el-col>
+        </el-row>
+
+          <div v-loading="!isLoad">
+
+            <el-row>
+              <el-col :span="chart_sapn" v-if='isLoad'>
+                <div class="chart_section">
+                  <fieldset id="log_pie_fs">
+                    <legend>Web Portal PM2 Logs <span v-html='period'></span></legend>
+                    <alm-pie-chart v-bind:labels='labels_customer_pie' v-bind:ds='datasets_customer_pie'></alm-pie-chart>
+                  </fieldset>
+                </div>
+                <br/>
+                <br/>
+                <div class="chart_section">
+                  <fieldset id="log_fs">
+                    <legend>Web Portal PM2 Logs <span v-html='period'></span></legend>
+                    <alm-line-chart v-bind:labels='labels_customer' v-bind:label='label' v-bind:data='datasets_customer'></alm-bar-chart>
+                  </fieldset>
+                </div>
+                
+              </el-col>
+            </el-row>
+          </div>
+          </div>
+        </script>
         <script type="x-template" id="view_tmp">
           <div class="view">
             <el-row>

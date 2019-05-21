@@ -1,4 +1,101 @@
  function checkin() {
+     
+    var view_log = {
+        //  props: ['isLoad', 'labels_line', 'data_line'],
+        template: '#view_tmp_log',
+        data: function () {
+            return {
+                formInline: {
+                    type: 'LT',
+                    file: '100'
+                },
+                isLoad: false,
+                chart_sapn: 24,
+                filters: Object.create(null),
+                label: '',
+                period: 'Null',
+                labels_customer: [],
+                datasets_customer: [],
+                labels_customer_pie: [],
+                datasets_customer_pie: []
+            }
+        },
+        created: function () {
+            this.$nextTick(function () {
+                this.filters.type = 'LT';
+                this.filters.file = '100';
+                setTimeout(() => {
+                    this.drawCharts();
+                }, 3000);
+            });
+        },
+        methods: {
+            onSubmit() {
+                this.isLoad = false;
+                this.filters.type = this.formInline.type;
+                this.filters.file = this.formInline.file;
+                this.drawCharts(this.filters);
+            },
+            drawCharts(filters) {
+                var url = '/api/log';
+                var _f = filters || this.filters;
+                // console.log(_f);
+                if (_f) {
+                    url += '/' + _f.type;
+                    url += '/' + _f.file;
+                }
+                this.$http.get(url).then(function (res) {
+                    this.isLoad = true;
+                    var chart_data_set = res.body;
+                    this.drawBar(chart_data_set['customer'], (_axis, _data ,_period) => {
+                        this.labels_customer = _axis;
+                        this.datasets_customer = _data;
+                        this.label = _f.type;
+                        this.period = _period;
+                    });
+                    this.drawPie(chart_data_set['customer_pie'], (_axis, _data) => {
+                        this.labels_customer_pie = _axis;
+                        this.datasets_customer_pie = _data;
+                    });
+
+                }, function () {
+                    console.log('Request failed.');
+                });
+            },
+            drawBar(chart_data_set, callback) {
+                var chart_data = JSON.parse(JSON.stringify(chart_data_set));
+                var data = chart_data.data;
+                var x_axis = chart_data.x_axis;
+                var _period = chart_data.period;
+                // console.log(chart_data);
+                callback(x_axis, data, _period);
+            },
+            drawPie(chart_data_set, callback) {
+                var chart_data = JSON.parse(JSON.stringify(chart_data_set));
+                var data = chart_data.data;
+                var x_axis = chart_data.x_axis;
+                console.log(chart_data);
+                callback(x_axis, data);
+            },
+
+            generate_image(chart_key) {
+                var fd = document.getElementById(chart_key);
+                if (fd) {
+                    var canvas = fd.getElementsByTagName('canvas')[0];
+                    var image = canvas.toDataURL({
+                        type: "png",
+                        backgroundColor: '#fff', //不设置此项，导出图片的底色是黑色
+                    });
+                    var a_lk = fd.getElementsByTagName('a')[0];
+                    console.log(a_lk);
+                    a_lk.href = image;
+                } else {
+                    console.log('can not find chart section.');
+                }
+            }
+        }
+    };
+
      var view = {
          //  props: ['isLoad', 'labels_line', 'data_line'],
          template: '#view_tmp',
@@ -627,9 +724,13 @@
 
      var routesCfg = [{
              path: '/',
-             redirect: '/view',
-             component: view
+             redirect: '/view_log',
+             component: view_log
          },
+         {
+            path: '/view_log',
+            component: view_log
+        },
          {
              path: '/view',
              component: view
